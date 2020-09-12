@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../shared/shared.module';
+import { ButtonModule } from '../shared/components/button/button.module';
 
 import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [SearchComponent],
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, ButtonModule],
   exports: [SearchComponent],
 })
 export class SearchModule {}
