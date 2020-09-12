@@ -1,0 +1,22 @@
+<table>
+    <thead>
+        <tr>
+            <th>Название хранилища</th>
+            <th>Описание хранилища</th>
+            <th>Полки</th>
+            <th>Ряды</th>
+            <th>Книги</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let vault of filteredVaults" [routerLink]="vault.id">
+            <td>{{vault.name}}</td>
+            <td>{{vault.description}}</td>
+            <td>{{vault.shelfs.shelfs.length}}</td>
+            <td>{{vault.rows}}</td>
+            <td>{{vault.books}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<router-outlet></router-outlet>
