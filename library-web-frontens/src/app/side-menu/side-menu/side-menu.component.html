@@ -1,0 +1,10 @@
+<aside class="side-menu">
+   <app-button class="side-menu__button" [title]="'Добавить'"></app-button>
+<ul>
+    <li [routerLink]="menuItem.route" routerLinkActive="router-link-active"  *ngFor="let menuItem of menu">{{menuItem.name}}
+        <ul *ngIf="menuItem.items">
+            <li [routerLink]="menuItem.route + '/' + item.route" routerLinkActive="router-link-active"  *ngFor="let item of menuItem.items">{{item.name}}</li>
+        </ul>
+    </li>
+</ul>
+</aside>

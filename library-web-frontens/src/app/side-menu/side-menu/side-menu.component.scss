@@ -1,0 +1,11 @@
+@import "../../../styles/colors.scss";
+
+:host {
+  .side-menu {
+    width: 15rem;
+    height: 100vh;
+    padding: 0 1rem;
+
+    border-right: 1px solid $gray;
+  }
+}
