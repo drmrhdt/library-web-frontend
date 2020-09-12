@@ -5,8 +5,8 @@ import { SideMenuComponent } from './side-menu/side-menu/side-menu.component';
 const routes: Routes = [
   {
     path: 'vault',
-    component: SideMenuComponent,
-    children: [{ path: ':id', component: SideMenuComponent }],
+    loadChildren: () =>
+      import('./vault/vault.module').then((m) => m.VaultModule),
   },
   {
     path: 'books',
