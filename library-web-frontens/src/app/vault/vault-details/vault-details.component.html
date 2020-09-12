@@ -1,0 +1,34 @@
+<table>
+    <thead>
+        <tr>
+            <th>Полка</th>
+            <th>Ряды</th>
+            <th>Всего книг</th>
+            <th>Книги</th>
+        </tr>
+    </thead>
+    <tbody> 
+        <ng-container *ngFor="let shelf of vault.shelfs.shelfs">
+        <tr>
+            <td [attr.rowspan]="shelf.rows?.length+1">
+                {{shelf.number}}
+            </td>
+        </tr>
+        <tr *ngFor="let row of shelf.rows">
+            <td>
+                {{row.number}}
+            </td>
+            <td>{{row.books?.length}}</td>
+            <td>
+                <ul *ngIf="row.books?.length; else emptyBlock">
+                    <li *ngFor="let book of row.books">
+                        {{book.name}}, {{book.author}}
+                    </li>
+                </ul>
+            </td>
+        </tr> 
+    </ng-container>
+    </tbody>
+</table>
+
+<ng-template #emptyBlock>Пусто</ng-template>
