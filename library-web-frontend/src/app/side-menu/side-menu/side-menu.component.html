@@ -1,5 +1,7 @@
 <aside class="side-menu">
-   <app-button class="side-menu__button" [title]="'Добавить'"></app-button>
+    <app-button class="side-menu__button"
+                [title]="'Добавить'"
+                (click)="toggleModal()"></app-button>
     <nav>
         <ul>
             <li *ngFor="let menuItem of menu">
@@ -13,3 +15,155 @@
         </ul>
     </nav>
 </aside>
+
+<app-modal *ngIf="isShowModalDialog"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавить'"
+           [bodyComponent]="bodyComponent"
+           (close)="toggleModal()">
+    <ng-template #bodyComponent>
+        <app-button [title]="'Хранилище'"
+                    (click)="toggleModal('vault')"></app-button>
+        <app-button [title]="'Книгу'"
+                    (click)="toggleModal('book')"></app-button>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isCreatingVault"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавление хранилища'"
+           [bodyComponent]="createVault"
+           (close)="toggleModal('vault')">
+    <ng-template #createVault>
+        <form [formGroup]="vaultForm"
+              (ngSubmit)="addVault()">
+
+            <div class="form-group">
+                <label for="vaultName">Название</label>
+                <input formControlName="name"
+                       type="text"
+                       id="vaultName"
+                       placeholder="Название хранилища"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="vaultDescription">Описание</label>
+                <textarea formControlName="description"
+                          id="vaultDescription"
+                          cols="30"
+                          rows="10"
+                          placeholder="Описание хранилища"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="numShelfs">Количество полок</label>
+                <input formControlName="numShelfs"
+                       type="number"
+                       min="1"
+                       id="numShelfs"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="numRows">Сколько у полок рядов?</label>
+                <input formControlName="numRows"
+                       type="number"
+                       min="1"
+                       id="numRows"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="listOfBooks">Загрузить список книг в хранилище?</label>
+                <input type="file"
+                       id="listOfBooks">
+            </div>
+
+            <app-button [title]="'Добавить'"></app-button>
+        </form>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isCreatingBook"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавление книги'"
+           [bodyComponent]="createBook"
+           (close)="toggleModal('book')">
+    <ng-template #createBook>
+        <form (ngSubmit)="addBook()"
+              [formGroup]="bookForm">
+
+            <div class="form-group">
+                <label for="bookName">Название</label>
+                <input formControlName="name"
+                       type="text"
+                       id="bookName"
+                       placeholder="Название книги"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="bookAuthor">Автор</label>
+                <input formControlName="author"
+                       type="text"
+                       id="bookAuthor"
+                       placeholder="Автор книги"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="bookDescription">Описание</label>
+                <textarea formControlName="description"
+                          id="bookDescription"
+                          cols="30"
+                          rows="10"
+                          placeholder="Описание книги"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="vault">Хранилище</label>
+                <select formControlName="vault"
+                        id="vault">
+                    <option value="none"
+                            selected>Не выбрано</option>
+                    <option *ngFor="let vault of vaults"
+                            [value]="vault.id">{{vault.name}}</option>
+                </select>
+            </div>
+
+            <div *ngIf="currentVault">
+                <div class="form-group">
+                    <label for="shelf">Сколько полок в хранилище?</label>
+                    <select formControlName="shelf"
+                            id="shelf">
+                        <option *ngFor="let shelf of currentVault.shelfs.shelfs"
+                                [value]="shelf.number">{{shelf.number}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="row">Сколько рядов на полке?</label>
+                    <select id="row">
+                        <option *ngFor="let row of currentVault.shelfs.shelfs[0].rows"
+                                [value]="row.number">{{row.number}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="frontCover">Выбрать фото передней обложки</label>
+                <input type="file"
+                       id="frontCover">
+            </div>
+
+            <div class="form-group">
+                <label for="sideCover">Выбрать фото боковой обложки</label>
+                <input type="file"
+                       id="sideCover">
+            </div>
+
+            <app-button [title]="'Добавить'"></app-button>
+        </form>
+    </ng-template>
+</app-modal>
