@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SideMenuComponent } from './side-menu/side-menu/side-menu.component';
 
 const routes: Routes = [
   {
@@ -10,8 +9,8 @@ const routes: Routes = [
   },
   {
     path: 'books',
-    component: SideMenuComponent,
-    children: [{ path: ':id', component: SideMenuComponent }],
+    loadChildren: () =>
+      import('./books/books.module').then((m) => m.BooksModule),
   },
 ];
 
