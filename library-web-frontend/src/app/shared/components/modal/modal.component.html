@@ -1,1 +1,13 @@
-<p>modal works!</p>
+<div class="modal__modal">
+  <header class="modal__header">
+    <h3>{{ modalTitle }}</h3>
+    <button class="modal__btn"
+            *ngIf="isShowCloseBtn"
+            (click)="closeDialog()">
+      <span class="material-icons">
+        close
+      </span>
+    </button>
+  </header>
+  <ng-content *ngTemplateOutlet="bodyComponent"> </ng-content>
+</div>
