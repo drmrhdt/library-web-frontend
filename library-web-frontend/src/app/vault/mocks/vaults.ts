@@ -5,6 +5,7 @@ export const vaults = [
         description: 'Описание 1',
         rows: 2,
         books: 9,
+        maxBooksOnShelf: 15,
         shelfs: {
             shelfs: [
                 {
@@ -152,6 +153,7 @@ export const vaults = [
         description: 'Описание 2',
         rows: 2,
         books: 0,
+        maxBooksOnShelf: 10,
         shelfs: {
             shelfs: [
                 {
@@ -171,6 +173,7 @@ export const vaults = [
         description: 'Описание 3',
         rows: 2,
         books: 0,
+        maxBooksOnShelf: 5,
         shelfs: {
             shelfs: [
                 {
