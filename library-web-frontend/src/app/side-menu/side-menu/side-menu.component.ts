@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { menu } from '../side-menu/mocks/menu'
-import { vaults } from '../../vault/mocks/vaults'
+import { vaults } from '../../../assets/mock/vaults'
 
 import { getArrayFromNumber } from '../../util/util'
 
