@@ -75,6 +75,15 @@
             </div>
 
             <div class="form-group">
+                <label for="maxBooksOnShelf">Максимальное количество книг на полке</label>
+                <input formControlName="maxBooksOnShelf"
+                       type="number"
+                       min="1"
+                       id="maxBooksOnShelf"
+                       required>
+            </div>
+
+            <div class="form-group">
                 <label for="listOfBooks">Загрузить список книг в хранилище?</label>
                 <input type="file"
                        id="listOfBooks">
@@ -125,30 +134,61 @@
                 <label for="vault">Хранилище</label>
                 <select formControlName="vault"
                         id="vault">
-                    <option value="none"
+                    <option [value]="null"
                             selected>Не выбрано</option>
                     <option *ngFor="let vault of vaults"
                             [value]="vault.id">{{vault.name}}</option>
                 </select>
             </div>
 
-            <div *ngIf="currentVault">
-                <div class="form-group">
-                    <label for="shelf">Выберите полку</label>
-                    <select formControlName="shelf"
-                            id="shelf">
-                        <option *ngFor="let shelf of currentVault.shelfs.shelfs"
-                                [value]="shelf.number">{{shelf.number}}</option>
-                    </select>
-                </div>
+            <ng-container *ngIf="isShowVaultsFields">
+                <div *ngIf="currentVault">
+                    <div class="form-group">
+                        <label for="shelf">Выберите полку</label>
+                        <select formControlName="shelf"
+                                id="shelf">
+                            <option *ngFor="let shelf of currentVault.shelfs.shelfs"
+                                    [value]="shelf.number">{{shelf.number}}</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="row">Выберите ряд</label>
-                    <select id="row">
-                        <option *ngFor="let row of currentVault.shelfs.shelfs[0].rows"
-                                [value]="row.number">{{row.number}}</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="row">Выберите ряд</label>
+                        <select id="row"
+                                formControlName="row">
+                            <option *ngFor="let row of currentVault.shelfs.shelfs[0].rows"
+                                    [value]="row.number">{{row.number}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number">Какой по порядку будет располагаться книга?</label>
+                        <select id="number"
+                                formControlName="number">
+                            <option *ngFor="let number of maxBooksOnShelfArray"
+                                    [value]="number + 1">{{number + 1}}</option>
+                        </select>
+                    </div>
                 </div>
+            </ng-container>
+
+            <div class="form-group">
+                <label for="status">На месте ли книга?</label>
+                <select id="status"
+                        formControlName="status">
+                    <option *ngFor="let status of statuses"
+                            [value]="status.value">{{status.text}}</option>
+                </select>
+            </div>
+
+            <div *ngIf="isShowReasonOfMissingField"
+                 class="form-group">
+                <label for="reasonOfmissing">Причина отсутствия</label>
+                <textarea formControlName="reasonOfmissing"
+                          id="reasonOfmissing"
+                          cols="30"
+                          rows="10"
+                          placeholder="Причина отсутствия"></textarea>
             </div>
 
             <div class="form-group">
