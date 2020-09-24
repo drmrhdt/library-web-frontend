@@ -53,8 +53,6 @@ export class SideMenuComponent implements OnInit {
             number: [null],
             status: ['inPlace'],
             reasonOfmissing: ['']
-            // frontCover
-            // sideCover
         })
 
         this.setBookLocationInVault()
