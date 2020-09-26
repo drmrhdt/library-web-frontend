@@ -1,0 +1,93 @@
+<form (ngSubmit)="addBook()"
+      [formGroup]="bookForm">
+
+    <div class="form-group">
+        <label for="bookName">Название</label>
+        <input formControlName="name"
+               type="text"
+               id="bookName"
+               placeholder="Название книги"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="bookAuthor">Автор</label>
+        <input formControlName="author"
+               type="text"
+               id="bookAuthor"
+               placeholder="Автор книги"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="bookDescription">Описание</label>
+        <textarea formControlName="description"
+                  id="bookDescription"
+                  cols="30"
+                  rows="10"
+                  placeholder="Описание книги"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="vault">Хранилище</label>
+        <select formControlName="vault"
+                id="vault">
+            <option [value]="null"
+                    selected>Не выбрано</option>
+            <option *ngFor="let vault of vaults"
+                    [value]="vault.id">{{vault.name}}</option>
+        </select>
+    </div>
+
+    <ng-container *ngIf="isShowVaultsFields">
+        <div *ngIf="currentVault">
+            <div class="form-group">
+                <label for="shelf">Выберите полку</label>
+                <select formControlName="shelf"
+                        id="shelf">
+                    <option *ngFor="let shelf of currentVault.shelfs.shelfs"
+                            [value]="shelf.number">{{shelf.number}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="row">Выберите ряд</label>
+                <select id="row"
+                        formControlName="row">
+                    <option *ngFor="let row of currentVault.shelfs.shelfs[0].rows"
+                            [value]="row.number">{{row.number}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="number">Какой по порядку будет располагаться книга?</label>
+                <select id="number"
+                        formControlName="number">
+                    <option *ngFor="let number of maxBooksOnShelfArray"
+                            [value]="number + 1">{{number + 1}}</option>
+                </select>
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="form-group">
+        <label for="status">На месте ли книга?</label>
+        <select id="status"
+                formControlName="status">
+            <option *ngFor="let status of statuses"
+                    [value]="status.value">{{status.text}}</option>
+        </select>
+    </div>
+
+    <div *ngIf="isShowReasonOfMissingField"
+         class="form-group">
+        <label for="reasonOfmissing">Причина отсутствия</label>
+        <textarea formControlName="reasonOfmissing"
+                  id="reasonOfmissing"
+                  cols="30"
+                  rows="10"
+                  placeholder="Причина отсутствия"></textarea>
+    </div>
+
+    <app-button [title]="'Добавить'"></app-button>
+</form>
