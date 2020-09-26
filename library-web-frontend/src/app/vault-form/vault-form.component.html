@@ -1,0 +1,56 @@
+<form [formGroup]="vaultForm"
+      (ngSubmit)="addVault()">
+
+    <div class="form-group">
+        <label for="vaultName">Название</label>
+        <input formControlName="name"
+               type="text"
+               id="vaultName"
+               placeholder="Название хранилища"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="vaultDescription">Описание</label>
+        <textarea formControlName="description"
+                  id="vaultDescription"
+                  cols="30"
+                  rows="10"
+                  placeholder="Описание хранилища"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="numShelfs">Количество полок</label>
+        <input formControlName="numShelfs"
+               type="number"
+               min="1"
+               id="numShelfs"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="numRows">Сколько у полок рядов?</label>
+        <input formControlName="numRows"
+               type="number"
+               min="1"
+               id="numRows"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="maxBooksOnShelf">Максимальное количество книг на полке</label>
+        <input formControlName="maxBooksOnShelf"
+               type="number"
+               min="1"
+               id="maxBooksOnShelf"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="listOfBooks">Загрузить список книг в хранилище?</label>
+        <input type="file"
+               id="listOfBooks">
+    </div>
+
+    <app-button [title]="'Добавить'"></app-button>
+</form>
