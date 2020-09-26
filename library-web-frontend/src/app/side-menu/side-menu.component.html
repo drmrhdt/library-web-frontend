@@ -1,0 +1,50 @@
+<aside class="side-menu">
+    <app-button class="side-menu__button"
+                [title]="'Добавить'"
+                (click)="toggleModal()"></app-button>
+    <nav>
+        <ul>
+            <li *ngFor="let menuItem of menu">
+                <span [routerLink]="menuItem.route">{{menuItem.name}}</span>
+                <ul *ngIf="menuItem.items">
+                    <li *ngFor="let item of menuItem.items">
+                        <span [routerLink]="menuItem.route + '/' + item.route">{{item.name}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+<app-modal *ngIf="isShowModalDialog"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавить'"
+           [bodyComponent]="bodyComponent"
+           (close)="toggleModal()">
+    <ng-template #bodyComponent>
+        <app-button [title]="'Хранилище'"
+                    (click)="toggleModal('vault')"></app-button>
+        <app-button [title]="'Книгу'"
+                    (click)="toggleModal('book')"></app-button>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isCreatingVault"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавление хранилища'"
+           [bodyComponent]="createVault"
+           (close)="toggleModal('vault')">
+    <ng-template #createVault>
+        <app-vault-form></app-vault-form>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isCreatingBook"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Добавление книги'"
+           [bodyComponent]="createBook"
+           (close)="toggleModal('book')">
+    <ng-template #createBook>
+        <app-book-form (success)="toggleModal('book')"></app-book-form>
+    </ng-template>
+</app-modal>

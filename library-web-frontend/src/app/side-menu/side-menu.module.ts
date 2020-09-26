@@ -5,18 +5,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { ButtonModule } from '../shared/components/button/button.module'
 import { ModalModule } from '../shared/components/modal/modal.module'
+import { BookFormModule } from '../book-form/book-form.module'
+import { VaultFormModule } from '../vault-form/vault-form.module'
 
-import { SideMenuComponent } from './side-menu/side-menu.component'
+import { SideMenuComponent } from './side-menu.component'
 
 @NgModule({
     declarations: [SideMenuComponent],
     imports: [
         CommonModule,
         RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
         ButtonModule,
-        ModalModule
+        ModalModule,
+        BookFormModule,
+        VaultFormModule
     ],
     exports: [SideMenuComponent]
 })
