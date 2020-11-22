@@ -89,5 +89,6 @@
                   placeholder="Причина отсутствия"></textarea>
     </div>
 
-    <app-button [title]="'Добавить'"></app-button>
+    <app-button [title]="'Добавить'"
+                [disabled]="bookForm.invalid"></app-button>
 </form>
