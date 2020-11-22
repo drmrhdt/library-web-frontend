@@ -44,11 +44,11 @@ export class BookFormComponent implements OnInit {
             reasonOfmissing: ['']
         })
 
-        this.setVaultData()
-        this.showReasonFieldDependsOnStatus()
+        this._setVaultData()
+        this._showReasonFieldDependsOnStatus()
     }
 
-    setVaultData(): void {
+    private _setVaultData(): void {
         this.bookForm.get('vault').valueChanges.subscribe(id => {
             this.currentVault = this.vaults.find(vault => vault.id === id)
             if (this.currentVault) {
@@ -74,7 +74,7 @@ export class BookFormComponent implements OnInit {
         })
     }
 
-    showReasonFieldDependsOnStatus(): void {
+    private _showReasonFieldDependsOnStatus(): void {
         this.bookForm
             .get('status')
             .valueChanges.subscribe(
