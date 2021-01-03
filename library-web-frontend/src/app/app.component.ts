@@ -1,7 +1,8 @@
 import { Component } from '@angular/core'
 
 import { AppService } from './services/app.service'
-import { BookService, VaultService } from './api/index'
+import { BookService } from './api/api/book.service'
+import { VaultService } from './api/api/vault.service'
 
 @Component({
     selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent {
 
             for (
                 let curVaultNum = 0;
-                curVaultNum < unfilteredVaults.length - 1;
+                curVaultNum < unfilteredVaults.length;
                 curVaultNum++
             ) {
                 const curVault = unfilteredVaults[curVaultNum]
