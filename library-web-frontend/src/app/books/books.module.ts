@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterModule, Routes } from '@angular/router'
 
+import { ButtonModule } from '../shared/components/button/button.module'
+
 import { BooksComponent } from './books.component'
 
 const routes: Routes = [
@@ -20,7 +22,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [BooksComponent],
-    imports: [CommonModule, RouterModule.forChild(routes)],
+    imports: [CommonModule, ButtonModule, RouterModule.forChild(routes)],
     exports: [BooksComponent]
 })
 export class BooksModule {}

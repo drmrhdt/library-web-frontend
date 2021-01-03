@@ -9,6 +9,8 @@
             <th>Ряд</th>
             <th>Номер</th>
             <th>Статус</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +23,13 @@
             <td>{{book?.row}}</td>
             <td>{{book?.number}}</td>
             <td>{{book?.status}}</td>
+            <td>
+                <app-button [title]="'Редактировать'"></app-button>
+            </td>
+            <td>
+                <app-button (click)="deleteBook(book?.id)"
+                            [title]="'Удалить'"></app-button>
+            </td>
         </tr>
     </tbody>
 </table>

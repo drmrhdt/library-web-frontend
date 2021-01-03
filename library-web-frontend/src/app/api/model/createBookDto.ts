@@ -12,11 +12,11 @@
 
 export interface CreateBookDto { 
     /**
-     * The books's name
+     * The book's name
      */
     name: string;
     /**
-     * The books's author
+     * The book's author
      */
     author: string;
     /**
@@ -39,4 +39,19 @@ export interface CreateBookDto {
      * The book's number on row
      */
     number: number;
+    /**
+     * Is the book missing or in place
+     */
+    status: CreateBookDto.StatusEnum;
+    /**
+     * The reason for the absence
+     */
+    reasonOfMissing: string;
+}
+export namespace CreateBookDto {
+    export type StatusEnum = 'inPlace' | 'missing';
+    export const StatusEnum = {
+        InPlace: 'inPlace' as StatusEnum,
+        Missing: 'missing' as StatusEnum
+    };
 }
