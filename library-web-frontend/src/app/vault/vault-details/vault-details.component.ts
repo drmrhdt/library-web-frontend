@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { vaults } from '../../../assets/mock/vaults'
+
+import { AppService } from '../../services/app.service'
 
 @Component({
     selector: 'app-vault-details',
@@ -10,12 +11,16 @@ import { vaults } from '../../../assets/mock/vaults'
 export class VaultDetailsComponent implements OnInit {
     vault
 
-    constructor(private _route: ActivatedRoute) {}
+    constructor(
+        private _route: ActivatedRoute,
+        private _appService: AppService
+    ) {}
 
     ngOnInit(): void {
-        this._route.params.subscribe(
-            params =>
-                (this.vault = vaults.find(vault => vault.id === params.id))
+        this._appService.vaults$.subscribe(vaults =>
+            this._route.params.subscribe(params => {
+                this.vault = vaults?.find(vault => vault.id === +params.id)
+            })
         )
     }
 }

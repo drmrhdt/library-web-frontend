@@ -1,20 +1,26 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { RouterModule, Routes } from '@angular/router'
 
-import { BooksComponent } from './books.component';
+import { BooksComponent } from './books.component'
 
 const routes: Routes = [
-  {
-    path: '',
-    component: BooksComponent,
-    children: [{ path: ':type', component: BooksComponent }],
-  },
-];
+    {
+        path: '',
+        component: BooksComponent,
+        children: [
+            {
+                path: ':type',
+                component: BooksComponent
+                //here we need resolver to filter data before page loaded
+            }
+        ]
+    }
+]
 
 @NgModule({
-  declarations: [BooksComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
-  exports: [BooksComponent],
+    declarations: [BooksComponent],
+    imports: [CommonModule, RouterModule.forChild(routes)],
+    exports: [BooksComponent]
 })
 export class BooksModule {}

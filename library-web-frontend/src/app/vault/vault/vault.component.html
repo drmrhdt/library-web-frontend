@@ -9,12 +9,13 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let vault of filteredVaults" [routerLink]="vault.id">
-            <td>{{vault.name}}</td>
-            <td>{{vault.description}}</td>
-            <td>{{vault.shelfs.shelfs.length}}</td>
-            <td>{{vault.rows}}</td>
-            <td>{{vault.books}}</td>
+        <tr *ngFor="let vault of filteredVaults"
+            [routerLink]="vault?.id">
+            <td>{{vault?.name}}</td>
+            <td>{{vault?.description}}</td>
+            <td>{{vault?.numShelfs}}</td>
+            <td>{{vault?.numRows}}</td>
+            <td>{{vault?.books.length}}</td>
         </tr>
     </tbody>
 </table>

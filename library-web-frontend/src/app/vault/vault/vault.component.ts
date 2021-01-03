@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 
 import { filter, map, mergeMap } from 'rxjs/operators'
 
-import { vaults } from '../../../assets/mock/vaults'
+import { AppService } from '../../services/app.service'
 
 @Component({
     selector: 'app-vault',
@@ -11,16 +11,26 @@ import { vaults } from '../../../assets/mock/vaults'
     styleUrls: ['./vault.component.scss']
 })
 export class VaultComponent implements OnInit {
-    vaults = vaults
-    filteredVaults = vaults
+    vaults = []
+    filteredVaults = []
 
-    constructor(private _route: ActivatedRoute, private _router: Router) {}
+    constructor(
+        private _route: ActivatedRoute,
+        private _router: Router,
+        private _appService: AppService
+    ) {}
 
     ngOnInit(): void {
-        this.filterVaults()
-    }
+        this._appService.vaults$.subscribe(vaults => {
+            this.vaults = vaults
+            this.filteredVaults = vaults
 
-    filterVaults(): void {
+            const id = +this._route.snapshot.firstChild?.params.id
+            this.filteredVaults = id
+                ? this.vaults?.filter(vault => vault.id === id)
+                : this.vaults
+        })
+
         this._router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
@@ -33,14 +43,10 @@ export class VaultComponent implements OnInit {
                 mergeMap(route => route.params)
             )
             .subscribe(params => {
-                this.filteredVaults = params.id
-                    ? this.vaults.filter(vault => vault.id === params.id)
+                const id = +params['id']
+                this.filteredVaults = id
+                    ? this.vaults?.filter(vault => vault.id === id)
                     : this.vaults
             })
-
-        const id = this._route.snapshot.firstChild?.params.id
-        this.filteredVaults = id
-            ? this.vaults.filter(vault => vault.id === id)
-            : this.vaults
     }
 }

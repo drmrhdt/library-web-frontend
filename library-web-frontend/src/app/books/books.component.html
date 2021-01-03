@@ -1,1 +1,26 @@
-<p>In development</p>
+<table>
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Описание</th>
+            <th>Хранилище</th>
+            <th>Полка</th>
+            <th>Ряд</th>
+            <th>Номер</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let book of books$ | async">
+            <td>{{book?.name}}</td>
+            <td>{{book?.author}}</td>
+            <td>{{book?.description}}</td>
+            <td [routerLink]="['..', 'vault', book?.vault?.id]">{{book?.vault?.name || '-'}}</td>
+            <td>{{book?.shelf}}</td>
+            <td>{{book?.row}}</td>
+            <td>{{book?.number}}</td>
+            <td>{{book?.status}}</td>
+        </tr>
+    </tbody>
+</table>

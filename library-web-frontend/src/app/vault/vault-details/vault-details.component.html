@@ -7,28 +7,28 @@
             <th>Книги</th>
         </tr>
     </thead>
-    <tbody> 
-        <ng-container *ngFor="let shelf of vault.shelfs.shelfs">
-        <tr>
-            <td [attr.rowspan]="shelf.rows?.length+1">
-                {{shelf.number}}
-            </td>
-        </tr>
-        <tr *ngFor="let row of shelf.rows">
-            <td>
-                {{row.number}}
-            </td>
-            <td>{{row.books?.length}}</td>
-            <td>
-                <ul *ngIf="row.books?.length; else emptyBlock">
-                    <li *ngFor="let book of row.books">
-                        {{book.name}}, {{book.author}}
-                    </li>
-                </ul>
-            </td>
-        </tr> 
-    </ng-container>
+    <tbody>
+        <ng-container *ngFor="let shelf of vault?.shelfs; let shelfNumber = index">
+            <tr>
+                <td [attr.rowspan]="shelf.rows?.length+1">
+                    {{shelfNumber + 1}}
+                </td>
+            </tr>
+            <tr *ngFor="let row of shelf.rows; let rowNumber = index">
+                <td>
+                    {{rowNumber + 1}}
+                </td>
+                <td>{{row.books?.length}}</td>
+                <td>
+                    <ul *ngIf="row.books?.length; else emptyBlock">
+                        <li *ngFor="let book of row.books">
+                            {{book.name}}, {{book.author}}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </ng-container>
     </tbody>
 </table>
 
-<ng-template #emptyBlock>Пусто</ng-template>
+<ng-template #emptyBlock>В ряду нет книг</ng-template>
