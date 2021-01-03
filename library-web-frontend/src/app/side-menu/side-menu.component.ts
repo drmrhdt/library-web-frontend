@@ -8,19 +8,18 @@ import { AppService } from '../services/app.service'
     styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent implements OnInit {
-    menu = [
-        {
-            name: 'Книги',
-            route: 'books',
-            items: [
-                {
-                    name: 'Нерассортированные',
-                    route: 'withoutVault'
-                },
-                { name: 'Отсутствующие', route: 'missing' }
-            ]
-        }
-    ]
+    menu = []
+    bookMenu = {
+        name: 'Книги',
+        route: 'books',
+        items: [
+            {
+                name: 'Нерассортированные',
+                route: 'withoutVault'
+            },
+            { name: 'Отсутствующие', route: 'missing' }
+        ]
+    }
     vaults
     isShowModalDialog = false
     isCreatingVault = false
@@ -32,18 +31,18 @@ export class SideMenuComponent implements OnInit {
         this._appService.vaults$.subscribe(vaults => {
             this.vaults = vaults
 
-            if (this.vaults?.length) {
-                const vaultsMenu = {
-                    name: 'Хранилища',
-                    route: 'vault',
-                    items: this.vaults?.map(vault => ({
-                        name: vault.name,
-                        route: vault.id
-                    }))
-                }
+            this.menu = []
 
-                this.menu.unshift(vaultsMenu)
+            const vaultsMenu = {
+                name: 'Хранилища',
+                route: 'vault',
+                items: this.vaults?.map(vault => ({
+                    name: vault.name,
+                    route: vault.id
+                }))
             }
+
+            this.menu.unshift(vaultsMenu, this.bookMenu)
         })
     }
 
