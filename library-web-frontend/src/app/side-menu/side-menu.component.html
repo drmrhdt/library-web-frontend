@@ -35,7 +35,7 @@
            [bodyComponent]="createVault"
            (close)="toggleModal('vault')">
     <ng-template #createVault>
-        <app-vault-form></app-vault-form>
+        <app-vault-form (success)="toggleModal('vault')"></app-vault-form>
     </ng-template>
 </app-modal>
 
