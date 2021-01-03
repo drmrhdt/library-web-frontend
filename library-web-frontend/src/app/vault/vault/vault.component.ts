@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { filter, map, mergeMap } from 'rxjs/operators'
 
 import { AppService } from '../../services/app.service'
+import { BookService } from '../../api/api/book.service'
+import { VaultService } from '../../api/api/vault.service'
 
 @Component({
     selector: 'app-vault',
@@ -17,7 +19,9 @@ export class VaultComponent implements OnInit {
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
-        private _appService: AppService
+        private _appService: AppService,
+        private _bookService: BookService,
+        private _vaultService: VaultService
     ) {}
 
     ngOnInit(): void {
@@ -48,5 +52,20 @@ export class VaultComponent implements OnInit {
                     ? this.vaults?.filter(vault => vault.id === id)
                     : this.vaults
             })
+    }
+
+    deleteVault(id: number): void {
+        this._vaultService
+            .vaultControllerDeleteById(id)
+            .pipe(
+                mergeMap(() => {
+                    return this._bookService.bookControllerGetAll()
+                }),
+                mergeMap(res => {
+                    this._appService.books$.next(res)
+                    return this._vaultService.vaultControllerGetAll()
+                })
+            )
+            .subscribe(res => this._appService.vaults$.next(res))
     }
 }

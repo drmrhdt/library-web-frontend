@@ -6,16 +6,24 @@
             <th>Полки</th>
             <th>Ряды</th>
             <th>Книги</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let vault of filteredVaults"
-            [routerLink]="vault?.id">
-            <td>{{vault?.name}}</td>
-            <td>{{vault?.description}}</td>
-            <td>{{vault?.numShelfs}}</td>
-            <td>{{vault?.numRows}}</td>
-            <td>{{vault?.books.length}}</td>
+        <tr *ngFor="let vault of filteredVaults">
+            <td [routerLink]="vault?.id">{{vault?.name}}</td>
+            <td [routerLink]="vault?.id">{{vault?.description}}</td>
+            <td [routerLink]="vault?.id">{{vault?.numShelfs}}</td>
+            <td [routerLink]="vault?.id">{{vault?.numRows}}</td>
+            <td [routerLink]="vault?.id">{{vault?.books.length}}</td>
+            <td>
+                <app-button [title]="'Редактировать'"></app-button>
+            </td>
+            <td>
+                <app-button (click)="deleteVault(vault?.id)"
+                            [title]="'Удалить'"></app-button>
+            </td>
         </tr>
     </tbody>
 </table>
