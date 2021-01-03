@@ -1,10 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { getArrayFromNumber } from 'src/app/util/util'
+
+import { mergeMap } from 'rxjs/operators'
+
+import { VaultService, CreateBookDto, BookService } from '../api/index'
 
 import { AppService } from '../services/app.service'
-import { BookService } from '../api/api/book.service'
-import { CreateBookDto } from '../api/model/createBookDto'
+
+import { getArrayFromNumber } from 'src/app/util/util'
 
 @Component({
     selector: 'app-book-form',
@@ -29,7 +32,8 @@ export class BookFormComponent implements OnInit {
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
-        private _bookService: BookService
+        private _bookService: BookService,
+        private _vaultService: VaultService
     ) {}
 
     ngOnInit(): void {
@@ -87,9 +91,19 @@ export class BookFormComponent implements OnInit {
             return
         }
         const bookData: CreateBookDto = this.bookForm.value
-        this._bookService.bookControllerCreate(bookData).subscribe(res => {
-            this._resetForm()
-        })
+        this._bookService
+            .bookControllerCreate(bookData)
+            .pipe(
+                mergeMap(() => {
+                    this._resetForm()
+                    return this._bookService.bookControllerGetAll()
+                }),
+                mergeMap(res => {
+                    this._appService.books$.next(res)
+                    return this._vaultService.vaultControllerGetAll()
+                })
+            )
+            .subscribe(res => this._appService.vaults$.next(res))
 
         this.success.emit(true)
     }
