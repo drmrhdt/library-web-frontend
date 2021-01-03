@@ -23,15 +23,16 @@ export class VaultFormComponent implements OnInit {
     }
 
     addVault(): void {
-        if (this.vaultForm.valid) {
-            console.log(this.vaultForm.value)
-            this.vaultForm.reset({
-                name: '',
-                description: '',
-                numShelfs: null,
-                numRows: null,
-                maxBooksOnShelf: null
-            })
+        if (this.vaultForm.invalid) {
+            return
         }
+
+        this.vaultForm.reset({
+            name: '',
+            description: '',
+            numShelfs: null,
+            numRows: null,
+            maxBooksOnShelf: null
+        })
     }
 }
