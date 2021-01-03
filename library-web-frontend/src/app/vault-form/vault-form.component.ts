@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
-import { VaultService } from '../api/index'
-import { CreateVaultDto } from '../api/model/createVaultDto'
+import { mergeMap } from 'rxjs/operators'
+
+import { VaultService, BookService, CreateVaultDto } from '../api/index'
+
+import { AppService } from '../services/app.service'
 
 @Component({
     selector: 'app-vault-form',
@@ -12,8 +15,12 @@ import { CreateVaultDto } from '../api/model/createVaultDto'
 export class VaultFormComponent implements OnInit {
     vaultForm: FormGroup
 
+    @Output() success: EventEmitter<boolean> = new EventEmitter()
+
     constructor(
         private _formBuilder: FormBuilder,
+        private _appService: AppService,
+        private _bookService: BookService,
         private _vaultService: VaultService
     ) {}
 
@@ -34,9 +41,20 @@ export class VaultFormComponent implements OnInit {
         }
 
         const vaultData: CreateVaultDto = this.vaultForm.value
-        this._vaultService.vaultControllerCreate(vaultData).subscribe(res => {
-            this._resetForm()
-        })
+        this._vaultService
+            .vaultControllerCreate(vaultData)
+            .pipe(
+                mergeMap(() => this._vaultService.vaultControllerGetAll()),
+                mergeMap(res => {
+                    this._appService.vaults$.next(res)
+                    return this._bookService.bookControllerGetAll()
+                })
+            )
+            .subscribe(res => {
+                this._appService.books$.next(res)
+                this._resetForm()
+                this.success.emit(true)
+            })
     }
 
     private _resetForm() {
