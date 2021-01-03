@@ -94,18 +94,17 @@ export class BookFormComponent implements OnInit {
         this._bookService
             .bookControllerCreate(bookData)
             .pipe(
-                mergeMap(() => {
-                    this._resetForm()
-                    return this._bookService.bookControllerGetAll()
-                }),
+                mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
                     this._appService.books$.next(res)
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
-            .subscribe(res => this._appService.vaults$.next(res))
-
-        this.success.emit(true)
+            .subscribe(res => {
+                this._appService.vaults$.next(res)
+                this._resetForm()
+                this.success.emit(true)
+            })
     }
 
     private _resetForm(): void {
