@@ -1,0 +1,41 @@
+@import './colors.scss';
+@import './mixins.scss';
+@import './shapes.scss';
+
+button {
+  padding: 0.5rem 1rem;
+
+  font-weight: bold;
+
+  background-color: transparent;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+
+  &.contained {
+    color: $color-white;
+
+    background-color: $color-primary;
+
+    @include add-shadow;
+
+    &:hover {
+      background-color: transparentize(
+      $color: $color-primary,
+      $amount: 0.15
+      );
+    }
+  }
+
+  &.outlined {
+    border: 1px solid $color-primary;
+
+    @include add-shadow;
+
+    &:hover {
+      color: $color-white;
+
+      background-color: $color-primary;
+    }
+  }
+}
