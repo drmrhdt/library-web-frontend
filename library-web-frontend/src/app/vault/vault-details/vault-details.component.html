@@ -15,7 +15,8 @@
                     {{shelfNumber + 1}}
                 </td>
             </tr>
-            <tr *ngFor="let row of shelf.rows; let rowNumber = index">
+            <tr class="rows"
+                *ngFor="let row of shelf.rows; let rowNumber = index">
                 <td class="center-text">
                     {{rowNumber + 1}}
                 </td>
