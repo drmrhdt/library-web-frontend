@@ -4,10 +4,9 @@
     <button class="modal__btn"
             *ngIf="isShowCloseBtn"
             (click)="closeDialog()">
-      <span class="material-icons">
-        close
-      </span>
+      <i class="icon icon-cross">
+      </i>
     </button>
   </header>
-  <ng-content *ngTemplateOutlet="bodyComponent"> </ng-content>
+  <ng-content *ngTemplateOutlet="bodyComponent"></ng-content>
 </div>

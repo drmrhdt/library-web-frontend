@@ -5,14 +5,14 @@
   font-weight: normal;
   font-family: '#{$icomoon-font-family}';
 
-  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?jpna8n');
-  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?jpna8n#iefix')
+  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?chrz0q');
+  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?chrz0q#iefix')
   format('embedded-opentype'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?jpna8n')
+  url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?chrz0q')
   format('truetype'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?jpna8n')
+  url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?chrz0q')
   format('woff'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?jpna8n##{$icomoon-font-family}')
+  url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?chrz0q##{$icomoon-font-family}')
   format('svg');
   font-display: block;
 }
@@ -41,6 +41,11 @@
 .icon-bin {
   &:before {
     content: $icon-bin;
+  }
+}
+.icon-cross {
+  &:before {
+    content: $icon-cross;
   }
 }
 .icon-checkmark {
