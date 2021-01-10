@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 
 import { AppService } from '../services/app.service'
 
@@ -25,7 +26,7 @@ export class SideMenuComponent implements OnInit {
     isCreatingVault = false
     isCreatingBook = false
 
-    constructor(private _appService: AppService) {}
+    constructor(private _appService: AppService, private _router: Router) {}
 
     ngOnInit(): void {
         this._appService.vaults$.subscribe(vaults => {
@@ -44,6 +45,11 @@ export class SideMenuComponent implements OnInit {
 
             this.menu.unshift(vaultsMenu, this.bookMenu)
         })
+    }
+
+    isNestedMenuItemChecked(route): boolean {
+        const parsedUrl = this._router.url.split('/')
+        return parsedUrl[parsedUrl.length - 1] == route
     }
 
     toggleModal(type?: string): void {

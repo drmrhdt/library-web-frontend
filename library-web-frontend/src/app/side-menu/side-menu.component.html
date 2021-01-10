@@ -2,14 +2,27 @@
     <app-button class="side-menu__button"
                 [class]="'outlined'"
                 [title]="'Добавить'"
-                (click)="toggleModal()"></app-button>
+                (click)="toggleModal()">
+    </app-button>
     <nav>
         <ul>
-            <li *ngFor="let menuItem of menu">
-                <span [routerLink]="menuItem.route">{{menuItem.name}}</span>
+            <li class="outer-menu-item"
+                *ngFor="let menuItem of menu">
+                <span class="outer-menu-item__text"
+                      [routerLink]="menuItem.route">
+                    {{menuItem.name}}
+                </span>
                 <ul *ngIf="menuItem.items">
-                    <li *ngFor="let item of menuItem.items">
-                        <span [routerLink]="menuItem.route + '/' + item.route">{{item.name}}</span>
+                    <li class="nested-menu-item"
+                        *ngFor="let item of menuItem.items"
+                        [routerLink]="[menuItem.route, item.route]"
+                        [class.checked]="isNestedMenuItemChecked(item.route)">
+                        <span class="nested-menu-item__text">
+                            {{item.name}}
+                        </span>
+                        <i class="icon icon-checkmark"
+                           *ngIf="isNestedMenuItemChecked(item.route)">
+                        </i>
                     </li>
                 </ul>
             </li>
@@ -25,10 +38,12 @@
     <ng-template #bodyComponent>
         <app-button [class]="'outlined'"
                     [title]="'Хранилище'"
-                    (click)="toggleModal('vault')"></app-button>
+                    (click)="toggleModal('vault')">
+        </app-button>
         <app-button [class]="'outlined'"
                     [title]="'Книгу'"
-                    (click)="toggleModal('book')"></app-button>
+                    (click)="toggleModal('book')">
+        </app-button>
     </ng-template>
 </app-modal>
 

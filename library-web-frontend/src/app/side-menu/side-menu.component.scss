@@ -1,11 +1,61 @@
-@import "../../styles/colors.scss";
+@import '../../styles/colors.scss';
 
 :host {
   .side-menu {
     width: 15rem;
     height: 100vh;
     padding: 0 1rem;
+    // background-color: $color-primary;
 
-    border-right: 1px solid $color-gray-1;
+    background-color: $color-gray-1;
+
+    // border-right: 1px solid $color-primary;
+
+    span {
+      display: block;
+    }
+
+    li {
+      cursor: pointer;
+    }
+
+    .outer-menu-item {
+      position: relative;
+
+      padding: 1rem;
+      padding: 0 0 1rem 0;
+
+      &__text {
+        padding: 0 0 0.5rem 0;
+
+        font-weight: bold;
+
+        border-bottom: 1px solid $color-primary;
+      }
+    }
+
+    .nested-menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &__text {
+        padding: 0.5rem;
+      }
+
+      &:hover {
+        background-color: transparentize(
+        $color: $color-menu-item-checked,
+        $amount: 0.795
+        );
+      }
+
+      &.checked {
+        background-color: transparentize(
+        $color: $color-menu-item-checked,
+        $amount: 0.9
+        );
+      }
+    }
   }
 }
