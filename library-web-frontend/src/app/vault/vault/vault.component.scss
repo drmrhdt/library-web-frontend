@@ -1,0 +1,50 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/mixins.scss';
+
+:host {
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-start;
+    width: 100%;
+    padding: 1rem 0;
+
+    table {
+        width: 100%;
+    }
+
+    .vault-details {
+        align-self: flex-start;
+        width: 25%;
+
+        @include add-shadow;
+
+        &__title,
+        &__content,
+        &__footer {
+            padding: 1rem;
+        }
+
+        &__title {
+            margin: 0;
+
+            font-size: 1rem;
+            color: $color-white;
+
+            background-color: $color-primary;
+        }
+
+        &__content > :nth-child(n) {
+            padding: 0.5rem 0;
+        }
+
+        &__footer {
+            border-top: 1px solid $color-gray-1;
+
+            .btn {
+                &--edit {
+                    margin-right: 1rem;
+                }
+            }
+        }
+    }
+}

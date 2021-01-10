@@ -1,4 +1,4 @@
-<table>
+<!-- <table>
     <thead>
         <tr>
             <th>Название хранилища</th>
@@ -28,6 +28,43 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
+
+<div class="vault-details"
+     *ngFor="let vault of filteredVaults">
+    <h3 class="vault-details__title">Информация о хранилище</h3>
+    <div class="vault-details__content">
+        <div [routerLink]="vault?.id">
+            <span>Название: </span>
+            <span>{{vault?.name}}</span>
+        </div>
+        <div [routerLink]="vault?.id">
+            <span>Описание: </span>
+            <span>{{vault?.description}}</span>
+        </div>
+        <div [routerLink]="vault?.id">
+            <span>Полки: </span>
+            <span>{{vault?.numShelfs}}</span>
+        </div>
+        <div [routerLink]="vault?.id">
+            <span>Ряды: </span>
+            <span>{{vault?.numRows}}</span>
+        </div>
+        <div [routerLink]="vault?.id">
+            <span>Книги: </span>
+            <span>{{vault?.books.length}}</span>
+        </div>
+    </div>
+    <div class="vault-details__footer">
+        <app-button class="btn--edit"
+                    [class]="'outlined'"
+                    [title]="'Редактировать'">
+        </app-button>
+        <app-button [class]="'outlined'"
+                    (click)="deleteVault(vault?.id)"
+                    [title]="'Удалить'">
+        </app-button>
+    </div>
+</div>
 
 <router-outlet></router-outlet>
