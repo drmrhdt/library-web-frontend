@@ -10,15 +10,16 @@
     <tbody>
         <ng-container *ngFor="let shelf of vault?.shelfs; let shelfNumber = index">
             <tr>
-                <td [attr.rowspan]="shelf.rows?.length+1">
+                <td class="shelf-number center-text"
+                    [attr.rowspan]="shelf.rows?.length+1">
                     {{shelfNumber + 1}}
                 </td>
             </tr>
             <tr *ngFor="let row of shelf.rows; let rowNumber = index">
-                <td>
+                <td class="center-text">
                     {{rowNumber + 1}}
                 </td>
-                <td>{{row.books?.length}}</td>
+                <td class="center-text">{{row.books?.length}}</td>
                 <td>
                     <ul *ngIf="row.books?.length; else emptyBlock">
                         <li *ngFor="let book of row.books">

@@ -1,10 +1,33 @@
-@import "../../../styles/colors.scss";
+@import '../../../styles/colors.scss';
+@import '../../../styles/mixins.scss';
 
-table,
+table {
+  border-collapse: collapse;
+
+  @include add-shadow;
+}
+
+thead {
+  box-shadow: 0 0 0 transparentize($color: $color-black, $amount: 0.95),
+  0 0 2px transparentize($color: $color-black, $amount: 0.86);
+}
+
 tr,
 td,
 th {
-  border-collapse: collapse;
+  padding: 1rem;
+}
 
-  border: 1px solid $color-gray-1;
+td {
+  border-bottom: 1px solid $color-gray-1;
+}
+
+thead {
+  color: $color-white;
+
+  background-color: $color-primary;
+}
+
+.shelf-number {
+  border-right: 1px solid $color-gray-1;
 }
