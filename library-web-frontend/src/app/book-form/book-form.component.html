@@ -24,7 +24,7 @@
         <textarea formControlName="description"
                   id="bookDescription"
                   cols="30"
-                  rows="10"
+                  rows="5"
                   placeholder="Описание книги"></textarea>
     </div>
 
@@ -95,6 +95,7 @@
                   placeholder="Причина отсутствия"></textarea>
     </div>
 
-    <app-button [title]="'Добавить'"
+    <app-button [class]="'contained'"
+                [title]="'Добавить'"
                 [disabled]="bookForm.invalid"></app-button>
 </form>

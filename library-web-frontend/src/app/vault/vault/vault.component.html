@@ -18,10 +18,12 @@
             <td [routerLink]="vault?.id">{{vault?.numRows}}</td>
             <td [routerLink]="vault?.id">{{vault?.books.length}}</td>
             <td>
-                <app-button [title]="'Редактировать'"></app-button>
+                <app-button [class]="'outlined'"
+                            [title]="'Редактировать'"></app-button>
             </td>
             <td>
-                <app-button (click)="deleteVault(vault?.id)"
+                <app-button [class]="'outlined'"
+                            (click)="deleteVault(vault?.id)"
                             [title]="'Удалить'"></app-button>
             </td>
         </tr>

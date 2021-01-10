@@ -24,10 +24,12 @@
             <td>{{book?.number}}</td>
             <td>{{book?.status}}</td>
             <td>
-                <app-button [title]="'Редактировать'"></app-button>
+                <app-button [class]="'outlined'"
+                            [title]="'Редактировать'"></app-button>
             </td>
             <td>
-                <app-button (click)="deleteBook(book?.id)"
+                <app-button [class]="'outlined'"
+                            (click)="deleteBook(book?.id)"
                             [title]="'Удалить'"></app-button>
             </td>
         </tr>

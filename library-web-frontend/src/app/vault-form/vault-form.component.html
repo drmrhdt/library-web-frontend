@@ -15,7 +15,7 @@
         <textarea formControlName="description"
                   id="vaultDescription"
                   cols="30"
-                  rows="10"
+                  rows="5"
                   placeholder="Описание хранилища"></textarea>
     </div>
 
@@ -52,5 +52,6 @@
                id="listOfBooks">
     </div>
 
-    <app-button [title]="'Добавить'"></app-button>
+    <app-button [class]="'contained'"
+                [title]="'Добавить'"></app-button>
 </form>

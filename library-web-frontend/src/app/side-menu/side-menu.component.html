@@ -1,5 +1,6 @@
 <aside class="side-menu">
     <app-button class="side-menu__button"
+                [class]="'outlined'"
                 [title]="'Добавить'"
                 (click)="toggleModal()"></app-button>
     <nav>
@@ -22,9 +23,11 @@
            [bodyComponent]="bodyComponent"
            (close)="toggleModal()">
     <ng-template #bodyComponent>
-        <app-button [title]="'Хранилище'"
+        <app-button [class]="'outlined'"
+                    [title]="'Хранилище'"
                     (click)="toggleModal('vault')"></app-button>
-        <app-button [title]="'Книгу'"
+        <app-button [class]="'outlined'"
+                    [title]="'Книгу'"
                     (click)="toggleModal('book')"></app-button>
     </ng-template>
 </app-modal>
