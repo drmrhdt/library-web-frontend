@@ -1,4 +1,12 @@
-@import "./styles/forms.scss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import './styles/forms.scss';
+@import './styles/buttons.scss';
+
+* {
+  font-family: 'Roboto', sans-serif;
+
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
 body {
   margin: 0;
@@ -10,8 +18,4 @@ li {
   padding-left: 0;
 
   list-style: none;
-}
-
-button {
-  border: none;
 }
