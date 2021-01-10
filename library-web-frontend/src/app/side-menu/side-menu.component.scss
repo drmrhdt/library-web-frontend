@@ -30,7 +30,7 @@
 
         font-weight: bold;
 
-        border-bottom: 1px solid $color-primary;
+        border-bottom: 2px solid $color-primary;
       }
     }
 
@@ -38,6 +38,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      .icon {
+        margin-right: 0.5rem;
+      }
 
       &__text {
         padding: 0.5rem;
