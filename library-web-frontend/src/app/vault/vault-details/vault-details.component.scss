@@ -38,13 +38,13 @@
         .rows:last-of-type td {
             border: none;
         }
+    }
 
-        .shelf-number {
-            border-right: 1px solid $color-gray-1;
+    .shelf-number {
+        border-right: 1px solid $color-gray-1;
 
-            &:last-of-type {
-                border-bottom: none;
-            }
+        &:last-of-type {
+            border-bottom: none;
         }
     }
 }
