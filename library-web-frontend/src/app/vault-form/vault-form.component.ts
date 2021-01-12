@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { mergeMap } from 'rxjs/operators'
@@ -17,6 +17,8 @@ export class VaultFormComponent implements OnInit {
 
     @Output() success: EventEmitter<boolean> = new EventEmitter()
 
+    @Input() vault
+
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
@@ -33,6 +35,10 @@ export class VaultFormComponent implements OnInit {
             maxBooksOnShelf: [1, [Validators.required, Validators.min(1)]]
             // listOfBooks
         })
+
+        if (this.vault) {
+            this.vaultForm.patchValue(this.vault)
+        }
     }
 
     addVault(): void {
@@ -55,6 +61,12 @@ export class VaultFormComponent implements OnInit {
                 this._resetForm()
                 this.success.emit(true)
             })
+    }
+
+    updateVaultById(vault, id: number) {
+        this._vaultService.vaultControllerUpdate(vault, id).subscribe(() => {
+            this.success.emit()
+        })
     }
 
     private _resetForm() {

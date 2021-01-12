@@ -4,8 +4,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 import { filter, map, mergeMap } from 'rxjs/operators'
 
 import { AppService } from '../../services/app.service'
-import { BookService } from '../../api/api/book.service'
-import { VaultService } from '../../api/api/vault.service'
+import { BookService, VaultService } from '../../api/index'
 
 @Component({
     selector: 'app-vault',
@@ -15,6 +14,7 @@ import { VaultService } from '../../api/api/vault.service'
 export class VaultComponent implements OnInit {
     vaults = []
     filteredVaults = []
+    isEditVault = false
 
     constructor(
         private _route: ActivatedRoute,

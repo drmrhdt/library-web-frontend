@@ -1,6 +1,5 @@
 <form [formGroup]="vaultForm"
-      (ngSubmit)="addVault()">
-
+      (ngSubmit)="vault ? updateVaultById(this.vaultForm.value, vault?.id): addVault()">
     <div class="form-group">
         <label for="vaultName">Название</label>
         <input formControlName="name"
@@ -53,5 +52,5 @@
     </div>
 
     <app-button [class]="'contained'"
-                [title]="'Добавить'"></app-button>
+                [title]="vault? 'Обновить' : 'Добавить'"></app-button>
 </form>

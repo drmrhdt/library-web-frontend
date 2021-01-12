@@ -55,8 +55,10 @@
             <span>{{vault?.books.length}}</span>
         </div>
     </div>
+
     <div class="vault-details__footer">
         <app-button class="btn--edit"
+                    (click)="isEditVault = true"
                     [class]="'outlined'"
                     [title]="'Редактировать'">
         </app-button>
@@ -68,3 +70,14 @@
 </div>
 
 <router-outlet></router-outlet>
+
+<app-modal *ngIf="isEditVault"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Редактирование хранилища'"
+           [bodyComponent]="editVault"
+           (close)="isEditVault = false">
+    <ng-template #editVault>
+        <app-vault-form (success)="isEditVault = false"
+                        [vault]="filteredVaults[0]"></app-vault-form>
+    </ng-template>
+</app-modal>
