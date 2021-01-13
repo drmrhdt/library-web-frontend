@@ -1,55 +1,70 @@
 @import 'variables';
 
 @font-face {
-  font-style: normal;
-  font-weight: normal;
-  font-family: '#{$icomoon-font-family}';
+    font-style: normal;
+    font-weight: normal;
+    font-family: '#{$icomoon-font-family}';
 
-  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?chrz0q');
-  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?chrz0q#iefix')
-  format('embedded-opentype'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?chrz0q')
-  format('truetype'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?chrz0q')
-  format('woff'),
-  url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?chrz0q##{$icomoon-font-family}')
-  format('svg');
-  font-display: block;
+    src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?hg9wlm');
+    src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?hg9wlm#iefix')
+            format('embedded-opentype'),
+        url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?hg9wlm')
+            format('truetype'),
+        url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?hg9wlm')
+            format('woff'),
+        url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?hg9wlm##{$icomoon-font-family}')
+            format('svg');
+    font-display: block;
 }
 
 [class^='icon-'],
 [class*=' icon-'] {
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  line-height: 1;
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: '#{$icomoon-font-family}' !important;
-  text-transform: none;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: '#{$icomoon-font-family}' !important;
+    text-transform: none;
 
-  speak: never;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    speak: never;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-pencil {
-  &:before {
-    content: $icon-pencil;
-  }
+    &:before {
+        content: $icon-pencil;
+    }
 }
 .icon-bin {
-  &:before {
-    content: $icon-bin;
-  }
+    &:before {
+        content: $icon-bin;
+    }
 }
 .icon-cross {
-  &:before {
-    content: $icon-cross;
-  }
+    &:before {
+        content: $icon-cross;
+    }
 }
 .icon-checkmark {
-  &:before {
-    content: $icon-checkmark;
-  }
+    &:before {
+        content: $icon-checkmark;
+    }
+}
+.icon-tags {
+    &:before {
+        content: $icon-tags;
+    }
+}
+.icon-spinner {
+    &:before {
+        content: $icon-spinner;
+    }
+}
+.icon-github {
+    &:before {
+        content: $icon-github;
+    }
 }
