@@ -1,65 +1,88 @@
 @import '../../styles/colors.scss';
 
 :host {
-  .side-menu {
-    width: 15rem;
-    height: 100vh;
-    padding: 0 1rem;
-    // background-color: $color-primary;
+    .side-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+        width: 15rem;
+        height: 100vh;
+        padding: 1rem;
 
-    background-color: $color-gray-1;
+        background-color: $color-gray-1;
 
-    // border-right: 1px solid $color-primary;
+        // border-right: 1px solid $color-primary;
 
-    span {
-      display: block;
+        span {
+            display: block;
+        }
+
+        li {
+            cursor: pointer;
+        }
+
+        .outer-menu-item {
+            position: relative;
+
+            padding: 1rem;
+            padding: 0 0 1rem 0;
+
+            &__text {
+                padding: 0 0 0.5rem 0;
+
+                font-weight: bold;
+
+                border-bottom: 2px solid $color-primary;
+            }
+        }
+
+        .nested-menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .icon {
+                margin-right: 0.5rem;
+            }
+
+            &__text {
+                padding: 0.5rem;
+            }
+
+            &:hover {
+                background-color: transparentize(
+                    $color: $color-menu-item-checked,
+                    $amount: 0.795
+                );
+            }
+
+            &.checked {
+                background-color: transparentize(
+                    $color: $color-menu-item-checked,
+                    $amount: 0.9
+                );
+            }
+        }
     }
 
-    li {
-      cursor: pointer;
+    .github-link-block {
+        margin: 0 auto;
+
+        font-size: 0.9rem;
+
+        &__text {
+            display: inline !important;
+            margin-right: 1rem;
+        }
+
+        .link-github {
+            font-size: 1rem;
+            color: inherit;
+
+            .icon-github {
+                margin-right: 0.2rem;
+            }
+        }
     }
-
-    .outer-menu-item {
-      position: relative;
-
-      padding: 1rem;
-      padding: 0 0 1rem 0;
-
-      &__text {
-        padding: 0 0 0.5rem 0;
-
-        font-weight: bold;
-
-        border-bottom: 2px solid $color-primary;
-      }
-    }
-
-    .nested-menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .icon {
-        margin-right: 0.5rem;
-      }
-
-      &__text {
-        padding: 0.5rem;
-      }
-
-      &:hover {
-        background-color: transparentize(
-        $color: $color-menu-item-checked,
-        $amount: 0.795
-        );
-      }
-
-      &.checked {
-        background-color: transparentize(
-        $color: $color-menu-item-checked,
-        $amount: 0.9
-        );
-      }
-    }
-  }
 }

@@ -1,33 +1,47 @@
 <aside class="side-menu">
-    <app-button class="side-menu__button"
-                [class]="'outlined'"
-                [title]="'Добавить'"
-                (click)="toggleModal()">
-    </app-button>
-    <nav>
-        <ul>
-            <li class="outer-menu-item"
-                *ngFor="let menuItem of menu">
-                <span class="outer-menu-item__text"
-                      [routerLink]="menuItem.route">
-                    {{menuItem.name}}
-                </span>
-                <ul *ngIf="menuItem.items">
-                    <li class="nested-menu-item"
-                        *ngFor="let item of menuItem.items"
-                        [routerLink]="[menuItem.route, item.route]"
-                        [class.checked]="isNestedMenuItemChecked(item.route)">
-                        <span class="nested-menu-item__text">
-                            {{item.name}}
-                        </span>
-                        <i class="icon icon-checkmark"
-                           *ngIf="isNestedMenuItemChecked(item.route)">
-                        </i>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+    <div>
+        <app-button class="side-menu__button"
+                    [class]="'outlined'"
+                    [title]="'Добавить'"
+                    (click)="toggleModal()">
+        </app-button>
+        <nav>
+            <ul>
+                <li class="outer-menu-item"
+                    *ngFor="let menuItem of menu">
+                    <span class="outer-menu-item__text"
+                          [routerLink]="menuItem.route">
+                        {{menuItem.name}}
+                    </span>
+                    <ul *ngIf="menuItem.items">
+                        <li class="nested-menu-item"
+                            *ngFor="let item of menuItem.items"
+                            [routerLink]="[menuItem.route, item.route]"
+                            [class.checked]="isNestedMenuItemChecked(item.route)">
+                            <span class="nested-menu-item__text">
+                                {{item.name}}
+                            </span>
+                            <i class="icon icon-checkmark"
+                               *ngIf="isNestedMenuItemChecked(item.route)">
+                            </i>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="github-link-block">
+        <span class="github-link-block__text">created by</span>
+        <a href="https://github.com/drmrhdt"
+           class="link-github">
+            < <i
+              class="icon icon-github">
+                </i>
+                drmrhdt
+                />
+        </a>
+    </div>
 </aside>
 
 <app-modal *ngIf="isShowModalDialog"

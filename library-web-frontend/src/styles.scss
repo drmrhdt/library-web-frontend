@@ -5,25 +5,29 @@
 @import './styles/table.scss';
 
 * {
-  font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 
-  outline: none;
+    outline: none;
 
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 
-  color: $color-black;
+    color: $color-black;
 
-  background-color: $color-background;
+    background-color: $color-background;
 }
 
 ul,
 li {
-  padding-left: 0;
+    padding-left: 0;
 
-  list-style: none;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
 }
