@@ -1,9 +1,14 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { mergeMap } from 'rxjs/operators'
 
-import { VaultService, CreateBookDto, BookService } from '../api/index'
+import {
+    VaultService,
+    CreateBookDto,
+    BookService,
+    TagsService
+} from '../api/index'
 
 import { AppService } from '../services/app.service'
 
@@ -22,6 +27,8 @@ export class BookFormComponent implements OnInit {
     maxBooksOnShelfArray: Array<number>
     vaults
 
+    inputTag = new FormControl()
+
     @Output() success: EventEmitter<boolean> = new EventEmitter()
 
     statuses = [
@@ -29,16 +36,14 @@ export class BookFormComponent implements OnInit {
         { text: 'На месте', value: 'inPlace' }
     ]
 
-    tags: { id: number; name: string; value: string }[] = [
-        { id: 1, name: 'Tag 1', value: 'Tag1' },
-        { id: 2, name: 'Tag 2', value: 'Tag2' }
-    ]
+    tags: { id: number; name: string; value: string }[] = []
 
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
         private _bookService: BookService,
-        private _vaultService: VaultService
+        private _vaultService: VaultService,
+        private _tagService: TagsService
     ) {}
 
     ngOnInit(): void {
@@ -58,7 +63,14 @@ export class BookFormComponent implements OnInit {
         })
 
         this._setVaultData()
+        this._setTags()
         this._showReasonFieldDependsOnStatus()
+    }
+
+    private _setTags(): void {
+        this._tagService
+            .tagsControllerFindAll()
+            .subscribe(tags => (this.tags = tags))
     }
 
     private _setVaultData(): void {
@@ -111,6 +123,12 @@ export class BookFormComponent implements OnInit {
                 this._resetForm()
                 this.success.emit(true)
             })
+    }
+
+    addTag(tag): void {
+        this._tagService
+            .tagsControllerCreate({ name: tag })
+            .subscribe(() => this._setTags())
     }
 
     private _resetForm(): void {

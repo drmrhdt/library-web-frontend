@@ -25,7 +25,8 @@
                   id="bookDescription"
                   cols="30"
                   rows="5"
-                  placeholder="Описание книги"></textarea>
+                  placeholder="Описание книги">
+        </textarea>
     </div>
 
     <div class="form-group">
@@ -81,7 +82,9 @@
         <select id="status"
                 formControlName="status">
             <option *ngFor="let status of statuses"
-                    [value]="status.value">{{status.text}}</option>
+                    [value]="status.value">
+                {{status.text}}
+            </option>
         </select>
     </div>
 
@@ -91,8 +94,20 @@
         <textarea formControlName="reasonOfmissing"
                   id="reasonOfmissing"
                   cols="30"
-                  rows="10"
-                  placeholder="Причина отсутствия"></textarea>
+                  rows="5"
+                  placeholder="Причина отсутствия">
+        </textarea>
+    </div>
+
+    <div>
+        <label for="tag">Создать тег</label>
+        <input id="tag"
+               [formControl]="inputTag"
+               type="text">
+        <app-button [title]="'Добавить'"
+                    [class]="'outlined'"
+                    (click)="addTag(inputTag.value)">
+        </app-button>
     </div>
 
     <div class="form-group">
