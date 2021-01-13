@@ -29,6 +29,11 @@ export class BookFormComponent implements OnInit {
         { text: 'На месте', value: 'inPlace' }
     ]
 
+    tags: { id: number; name: string; value: string }[] = [
+        { id: 1, name: 'Tag 1', value: 'Tag1' },
+        { id: 2, name: 'Tag 2', value: 'Tag2' }
+    ]
+
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
@@ -48,7 +53,8 @@ export class BookFormComponent implements OnInit {
             row: null,
             number: null,
             status: ['inPlace'],
-            reasonOfmissing: ['']
+            reasonOfmissing: [''],
+            tags: []
         })
 
         this._setVaultData()

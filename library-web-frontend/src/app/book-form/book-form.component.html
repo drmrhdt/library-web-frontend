@@ -95,6 +95,18 @@
                   placeholder="Причина отсутствия"></textarea>
     </div>
 
+    <div class="form-group">
+        <label for="tags">Теги</label>
+        <select id="tags"
+                formControlName="tags"
+                multiple>
+            <option *ngFor="let tag of tags"
+                    [value]="tag">
+                {{tag.name}}
+            </option>
+        </select>
+    </div>
+
     <app-button [class]="'contained'"
                 [title]="'Добавить'"
                 [disabled]="bookForm.invalid"></app-button>
