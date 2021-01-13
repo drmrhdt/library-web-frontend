@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { BookService } from './api/book.service';
+import { TagsService } from './api/tags.service';
 import { VaultService } from './api/vault.service';
 
 @NgModule({
@@ -12,6 +13,7 @@ import { VaultService } from './api/vault.service';
   exports:      [],
   providers: [
     BookService,
+    TagsService,
     VaultService ]
 })
 export class ApiModule {
