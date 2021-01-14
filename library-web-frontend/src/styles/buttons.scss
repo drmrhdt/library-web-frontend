@@ -39,4 +39,19 @@ button {
       background-color: $color-primary;
     }
   }
+
+  &.disabled {
+    background-color: $color-gray-1;
+    border: 1px solid $color-gray-1;
+    box-shadow: none;
+    cursor: auto;
+    opacity: 0.5;
+
+    &:hover {
+      color: inherit;
+
+      background-color: $color-gray-1;
+      border: 1px solid $color-gray-1;
+    }
+  }
 }
