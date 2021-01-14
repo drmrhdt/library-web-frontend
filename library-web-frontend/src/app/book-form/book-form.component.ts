@@ -60,7 +60,7 @@ export class BookFormComponent implements OnInit {
             row: null,
             number: null,
             status: ['inPlace'],
-            reasonOfmissing: [''],
+            reasonOfMissing: [''],
             tags: []
         })
 
@@ -141,7 +141,9 @@ export class BookFormComponent implements OnInit {
     }
 
     updateBook(book): void {
-        this._bookService.bookControllerUpdate(book, book.id).subscribe()
+        this._bookService
+            .bookControllerUpdate(this.bookForm.value, book.id)
+            .subscribe()
     }
 
     private _resetForm(): void {
