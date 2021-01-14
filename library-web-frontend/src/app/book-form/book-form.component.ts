@@ -65,7 +65,10 @@ export class BookFormComponent implements OnInit {
         })
 
         if (this.book) {
-            this.bookForm.patchValue(this.book)
+            this.bookForm.patchValue({
+                ...this.book,
+                vault: this.book?.vault?.id || null
+            })
         }
 
         this._setVaultData()
