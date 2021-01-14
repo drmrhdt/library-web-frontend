@@ -9,6 +9,7 @@
             <th>Ряд</th>
             <th>Номер</th>
             <th>Статус</th>
+            <th>Теги</th>
             <th></th>
             <th></th>
         </tr>
@@ -23,6 +24,11 @@
             <td>{{book?.row}}</td>
             <td>{{book?.number}}</td>
             <td>{{book?.status}}</td>
+            <td>
+                <span *ngFor="let tag of book.tags; let lastTag = last">
+                    {{tag.name}}{{lastTag ? '' : ','}}
+                </span>
+            </td>
             <td>
                 <app-button [class]="'outlined'"
                             [title]="'Редактировать'"></app-button>
