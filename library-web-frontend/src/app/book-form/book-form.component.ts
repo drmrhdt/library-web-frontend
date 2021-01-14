@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { mergeMap } from 'rxjs/operators'
@@ -28,6 +28,8 @@ export class BookFormComponent implements OnInit {
     vaults
 
     inputTag = new FormControl()
+
+    @Input() book
 
     @Output() success: EventEmitter<boolean> = new EventEmitter()
 
@@ -61,6 +63,10 @@ export class BookFormComponent implements OnInit {
             reasonOfmissing: [''],
             tags: []
         })
+
+        if (this.book) {
+            this.bookForm.patchValue(this.book)
+        }
 
         this._setVaultData()
         this._setTags()
@@ -129,6 +135,10 @@ export class BookFormComponent implements OnInit {
         this._tagService
             .tagsControllerCreate({ name: tag })
             .subscribe(() => this._setTags())
+    }
+
+    updateBook(book): void {
+        this._bookService.bookControllerUpdate(book, book.id).subscribe()
     }
 
     private _resetForm(): void {

@@ -1,4 +1,4 @@
-<form (ngSubmit)="addBook()"
+<form (ngSubmit)="book ? updateBook(book) : addBook()"
       [formGroup]="bookForm">
 
     <div class="form-group">
@@ -34,9 +34,13 @@
         <select formControlName="vault"
                 id="vault">
             <option [value]="null"
-                    selected>Не выбрано</option>
+                    selected>
+                Не выбрано
+            </option>
             <option *ngFor="let vault of vaults"
-                    [value]="vault.id">{{vault.name}}</option>
+                    [value]="vault.id">
+                {{vault.name}}
+            </option>
         </select>
     </div>
 
@@ -106,6 +110,7 @@
                type="text">
         <app-button [title]="'Добавить'"
                     [class]="'outlined'"
+                    [disabled]="!inputTag.value"
                     (click)="addTag(inputTag.value)">
         </app-button>
     </div>
@@ -123,6 +128,7 @@
     </div>
 
     <app-button [class]="'contained'"
-                [title]="'Добавить'"
-                [disabled]="bookForm.invalid"></app-button>
+                [title]="book ? 'Сохранить' : 'Добавить'"
+                [disabled]="bookForm.invalid">
+    </app-button>
 </form>

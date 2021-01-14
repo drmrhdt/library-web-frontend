@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common'
 import { RouterModule, Routes } from '@angular/router'
 
 import { ButtonModule } from '../shared/components/button/button.module'
+import { ModalModule } from '../shared/components/modal/modal.module'
+import { BookFormModule } from '../book-form/book-form.module'
 
 import { BooksComponent } from './books.component'
 
@@ -22,7 +24,13 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [BooksComponent],
-    imports: [CommonModule, ButtonModule, RouterModule.forChild(routes)],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        BookFormModule,
+        ModalModule,
+        RouterModule.forChild(routes)
+    ],
     exports: [BooksComponent]
 })
 export class BooksModule {}

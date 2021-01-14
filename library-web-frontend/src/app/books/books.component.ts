@@ -12,6 +12,7 @@ import { VaultService } from '../api/api/vault.service'
 })
 export class BooksComponent implements OnInit {
     books$
+    book
 
     constructor(
         private _appService: AppService,
@@ -36,5 +37,9 @@ export class BooksComponent implements OnInit {
                 })
             )
             .subscribe(res => this._appService.vaults$.next(res))
+    }
+
+    openEditDialog(book): void {
+        this.book = book
     }
 }

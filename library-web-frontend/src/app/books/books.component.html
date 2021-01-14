@@ -31,13 +31,26 @@
             </td>
             <td>
                 <app-button [class]="'outlined'"
-                            [title]="'Редактировать'"></app-button>
+                            [title]="'Редактировать'"
+                            (click)="openEditDialog(book)">
+                </app-button>
             </td>
             <td>
                 <app-button [class]="'outlined'"
                             (click)="deleteBook(book?.id)"
-                            [title]="'Удалить'"></app-button>
+                            [title]="'Удалить'">
+                </app-button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<app-modal *ngIf="book"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Редактирование книги'"
+           [bodyComponent]="editBook"
+           (close)="book = null">
+    <ng-template #editBook>
+        <app-book-form [book]="book"></app-book-form>
+    </ng-template>
+</app-modal>
