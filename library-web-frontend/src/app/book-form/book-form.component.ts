@@ -71,7 +71,7 @@ export class BookFormComponent implements OnInit {
             })
         }
 
-        this._setVaultData()
+        this._setVault()
         this._setTags()
         this._showReasonFieldDependsOnStatus()
     }
@@ -82,7 +82,7 @@ export class BookFormComponent implements OnInit {
             .subscribe(tags => (this.tags = tags))
     }
 
-    private _setVaultData(): void {
+    private _setVault(): void {
         this.bookForm.get('vault').valueChanges.subscribe(id => {
             this.currentVault = this.vaults.find(vault => vault.id === +id)
 
