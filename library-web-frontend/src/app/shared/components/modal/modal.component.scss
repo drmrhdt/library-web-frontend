@@ -31,9 +31,15 @@
     align-items: center;
   }
 
-  &__btn {
-    color: $color-gray-1;
+  &__footer {
+    margin: 1rem auto 0 auto;
+  }
 
-    background-color: $color-white;
+  &__btn {
+    &--close {
+      color: $color-gray-1;
+
+      background-color: $color-white;
+    }
   }
 }

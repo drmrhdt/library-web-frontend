@@ -12,13 +12,20 @@ import {
     styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
-    @Input() isShowCloseBtn: boolean = true
-    @Input() modalTitle: string = ''
+    @Input() isShowCloseBtn = true
+    @Input() isShowConfirmBtn = false
+    @Input() modalTitle = ''
+    @Input() confirmText = ''
     @Input() bodyComponent: TemplateRef<any>
 
     @Output() close: EventEmitter<null> = new EventEmitter<null>()
+    @Output() confirm: EventEmitter<null> = new EventEmitter<null>()
 
     closeDialog(): void {
         this.close.emit()
+    }
+
+    onConfirmClick(): void {
+        this.confirm.emit()
     }
 }
