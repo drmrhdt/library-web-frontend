@@ -58,9 +58,7 @@ export class VaultComponent implements OnInit {
         this._vaultService
             .vaultControllerDeleteById(id)
             .pipe(
-                mergeMap(() => {
-                    return this._bookService.bookControllerGetAll()
-                }),
+                mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
                     this._appService.books$.next(res)
                     return this._vaultService.vaultControllerGetAll()
