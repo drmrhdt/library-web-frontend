@@ -113,7 +113,7 @@ export class BookFormComponent implements OnInit {
             )
     }
 
-    addBook(): void {
+    createBook(): void {
         if (this.bookForm.invalid) {
             return
         }
@@ -134,15 +134,22 @@ export class BookFormComponent implements OnInit {
             })
     }
 
-    addTag(tag): void {
-        this._tagService
-            .tagsControllerCreate({ name: tag })
-            .subscribe(() => this._setTags())
+    createTag(tag): void {
+        this._tagService.tagsControllerCreate({ name: tag }).subscribe(() => {
+            this._setTags()
+            this.inputTag.patchValue('')
+        })
     }
 
     updateBook(book): void {
         this._bookService
-            .bookControllerUpdate(this.bookForm.value, book.id)
+            .bookControllerUpdate(
+                {
+                    ...this.bookForm.value
+                    // tags: this.bookForm.value.tags.map(tag => tag.id)
+                },
+                book.id
+            )
             .subscribe()
     }
 

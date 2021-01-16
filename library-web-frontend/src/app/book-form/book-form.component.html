@@ -1,4 +1,4 @@
-<form (ngSubmit)="book ? updateBook(book) : addBook()"
+<form (ngSubmit)="book ? updateBook(book) : createBook()"
       [formGroup]="bookForm">
 
     <div class="form-group">
@@ -106,12 +106,13 @@
     <div>
         <label for="tag">Создать тег</label>
         <input id="tag"
-               [formControl]="inputTag"
-               type="text">
+               placeholder="Название нового тега"
+               type="text"
+               [formControl]="inputTag">
         <app-button [title]="'Добавить'"
                     [class]="'outlined'"
                     [disabled]="!inputTag.value"
-                    (click)="addTag(inputTag.value)">
+                    (click)="createTag(inputTag.value)">
         </app-button>
     </div>
 
