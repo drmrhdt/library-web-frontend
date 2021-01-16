@@ -36,7 +36,7 @@
                    [title]="'Редактировать'">
                 </i>
                 <i class="icon icon-bin"
-                   (click)="deleteBook(book?.id)"
+                   (click)="toggleDeletingDialog(book)"
                    [title]="'Удалить'">
                 </i>
             </td>
@@ -44,7 +44,7 @@
     </tbody>
 </table>
 
-<app-modal *ngIf="book"
+<app-modal *ngIf="isUpdatingDialogOpened"
            [isShowCloseBtn]="true"
            [modalTitle]="'Редактирование книги'"
            [bodyComponent]="editBook"
@@ -53,5 +53,18 @@
         <app-book-form [book]="book"
                        (success)="toggleEditDialog()">
         </app-book-form>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isDeletingDialogOpened"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Удаление книги'"
+           [bodyComponent]="deletingBook"
+           [confirmText]="'Удалить'"
+           [isShowConfirmBtn]="true"
+           (close)="toggleDeletingDialog()"
+           (confirm)="deleteBook()">
+    <ng-template #deletingBook>
+        Вы уверены, что хотите удалить книгу "{{book?.name}}"?
     </ng-template>
 </app-modal>

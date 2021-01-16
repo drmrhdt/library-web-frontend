@@ -1,5 +1,11 @@
 @import '../../styles/table.scss';
 
-.icon {
+:host {
+  .icon {
     cursor: pointer;
+
+    &-bin {
+      margin-left: 0.6rem;
+    }
+  }
 }

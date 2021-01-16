@@ -13,6 +13,8 @@ import { VaultService } from '../api/api/vault.service'
 export class BooksComponent implements OnInit {
     books$
     book
+    isDeletingDialogOpened = false
+    isUpdatingDialogOpened = false
 
     constructor(
         private _appService: AppService,
@@ -24,9 +26,9 @@ export class BooksComponent implements OnInit {
         this.books$ = this._appService.books$
     }
 
-    deleteBook(id: number): void {
+    deleteBook(): void {
         this._bookService
-            .bookControllerDeleteById(id)
+            .bookControllerDeleteById(this.book?.id)
             .pipe(
                 mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
@@ -34,10 +36,19 @@ export class BooksComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
-            .subscribe(res => this._appService.vaults$.next(res))
+            .subscribe(res => {
+                this._appService.vaults$.next(res)
+                this.toggleDeletingDialog(null)
+            })
     }
 
     toggleEditDialog(book): void {
+        this.isUpdatingDialogOpened = !this.isUpdatingDialogOpened
+        this.book = book
+    }
+
+    toggleDeletingDialog(book): void {
+        this.isDeletingDialogOpened = !this.isDeletingDialogOpened
         this.book = book
     }
 }
