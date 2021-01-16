@@ -1,50 +1,10 @@
 @import '../../../styles/colors.scss';
-@import '../../../styles/mixins.scss';
+@import '../../../styles/table.scss';
 
-:host {
-    width: 72%;
+.shelf-number {
+    border-right: 1px solid $color-gray-1;
 
-    table {
-        width: 100%;
-
-        border-collapse: collapse;
-
-        @include add-shadow;
-
-        thead {
-            box-shadow: 0 0 0
-                    transparentize($color: $color-black, $amount: 0.95),
-                0 0 2px transparentize($color: $color-black, $amount: 0.86);
-            color: $color-white;
-
-            background-color: $color-primary;
-        }
-
-        tr,
-        td,
-        th {
-            padding: 1rem;
-        }
-
-        tr > th:not(:last-of-type),
-        tr > td:not(:last-of-type) {
-            width: 10%;
-        }
-
-        td {
-            border-bottom: 1px solid $color-gray-1;
-        }
-
-        .rows:last-of-type td {
-            border: none;
-        }
-    }
-
-    .shelf-number {
-        border-right: 1px solid $color-gray-1;
-
-        &:last-of-type {
-            border-bottom: none;
-        }
+    &:last-of-type {
+        border-bottom: none;
     }
 }
