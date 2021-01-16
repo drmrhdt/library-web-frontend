@@ -37,7 +37,7 @@ export class BooksComponent implements OnInit {
             .subscribe(res => this._appService.vaults$.next(res))
     }
 
-    openEditDialog(book): void {
+    toggleEditDialog(book): void {
         this.book = book
     }
 }

@@ -64,16 +64,19 @@ export class BookFormComponent implements OnInit {
             tags: []
         })
 
-        if (this.book) {
+        this._setBook(this.book)
+        this._setVault()
+        this._setTags()
+        this._showReasonFieldDependsOnStatus()
+    }
+
+    private _setBook(book): void {
+        if (book) {
             this.bookForm.patchValue({
                 ...this.book,
                 vault: this.book?.vault?.id || null
             })
         }
-
-        this._setVault()
-        this._setTags()
-        this._showReasonFieldDependsOnStatus()
     }
 
     private _setTags(): void {
@@ -134,22 +137,9 @@ export class BookFormComponent implements OnInit {
             })
     }
 
-    createTag(tag): void {
-        this._tagService.tagsControllerCreate({ name: tag }).subscribe(() => {
-            this._setTags()
-            this.inputTag.patchValue('')
-        })
-    }
-
     updateBook(book): void {
         this._bookService
-            .bookControllerUpdate(
-                {
-                    ...this.bookForm.value
-                    // tags: this.bookForm.value.tags.map(tag => tag.id)
-                },
-                book.id
-            )
+            .bookControllerUpdate(this.bookForm.value, book.id)
             .pipe(
                 mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
@@ -157,7 +147,17 @@ export class BookFormComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
-            .subscribe()
+            .subscribe(res => {
+                this._appService.vaults$.next(res)
+                this.success.emit(true)
+            })
+    }
+
+    createTag(tag): void {
+        this._tagService.tagsControllerCreate({ name: tag }).subscribe(() => {
+            this._setTags()
+            this.inputTag.patchValue('')
+        })
     }
 
     private _resetForm(): void {

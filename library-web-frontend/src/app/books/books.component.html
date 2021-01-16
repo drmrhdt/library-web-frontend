@@ -18,7 +18,9 @@
             <td>{{book?.name}}</td>
             <td>{{book?.author}}</td>
             <td>{{book?.description}}</td>
-            <td [routerLink]="['..', 'vault', book?.vault?.id]">{{book?.vault?.name || '-'}}</td>
+            <td [routerLink]="['..', 'vault', book?.vault?.id]">
+                {{book?.vault?.name || '-'}}
+            </td>
             <td>{{book?.shelf}}</td>
             <td>{{book?.row}}</td>
             <td>{{book?.number}}</td>
@@ -30,7 +32,7 @@
             </td>
             <td>
                 <i class="icon icon-pencil"
-                   (click)="openEditDialog(book)"
+                   (click)="toggleEditDialog(book)"
                    [title]="'Редактировать'">
                 </i>
                 <i class="icon icon-bin"
@@ -46,8 +48,10 @@
            [isShowCloseBtn]="true"
            [modalTitle]="'Редактирование книги'"
            [bodyComponent]="editBook"
-           (close)="book = null">
+           (close)="toggleEditDialog()">
     <ng-template #editBook>
-        <app-book-form [book]="book"></app-book-form>
+        <app-book-form [book]="book"
+                       (success)="toggleEditDialog()">
+        </app-book-form>
     </ng-template>
 </app-modal>
