@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterModule, Routes } from '@angular/router'
 
-import { ButtonModule } from '../shared/components/button/button.module'
 import { ModalModule } from '../shared/components/modal/modal.module'
 import { BookFormModule } from '../book-form/book-form.module'
 
@@ -26,7 +25,6 @@ const routes: Routes = [
     declarations: [BooksComponent],
     imports: [
         CommonModule,
-        ButtonModule,
         BookFormModule,
         ModalModule,
         RouterModule.forChild(routes)

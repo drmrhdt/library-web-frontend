@@ -11,7 +11,6 @@
             <th>Статус</th>
             <th>Теги</th>
             <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -30,16 +29,14 @@
                 </span>
             </td>
             <td>
-                <app-button [class]="'outlined'"
-                            [title]="'Редактировать'"
-                            (click)="openEditDialog(book)">
-                </app-button>
-            </td>
-            <td>
-                <app-button [class]="'outlined'"
-                            (click)="deleteBook(book?.id)"
-                            [title]="'Удалить'">
-                </app-button>
+                <i class="icon icon-pencil"
+                   (click)="openEditDialog(book)"
+                   [title]="'Редактировать'">
+                </i>
+                <i class="icon icon-bin"
+                   (click)="deleteBook(book?.id)"
+                   [title]="'Удалить'">
+                </i>
             </td>
         </tr>
     </tbody>
