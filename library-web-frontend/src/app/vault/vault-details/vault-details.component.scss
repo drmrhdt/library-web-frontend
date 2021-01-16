@@ -1,10 +1,14 @@
 @import '../../../styles/colors.scss';
 @import '../../../styles/table.scss';
 
-.shelf-number {
+:host {
+  width: 72%;
+
+  .shelf-number {
     border-right: 1px solid $color-gray-1;
 
     &:last-of-type {
-        border-bottom: none;
+      border-bottom: none;
     }
+  }
 }
