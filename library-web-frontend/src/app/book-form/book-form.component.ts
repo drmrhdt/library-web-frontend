@@ -150,6 +150,13 @@ export class BookFormComponent implements OnInit {
                 },
                 book.id
             )
+            .pipe(
+                mergeMap(() => this._bookService.bookControllerGetAll()),
+                mergeMap(res => {
+                    this._appService.books$.next(res)
+                    return this._vaultService.vaultControllerGetAll()
+                })
+            )
             .subscribe()
     }
 

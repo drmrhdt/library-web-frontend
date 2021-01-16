@@ -64,9 +64,18 @@ export class VaultFormComponent implements OnInit {
     }
 
     updateVaultById(vault, id: number) {
-        this._vaultService.vaultControllerUpdate(vault, id).subscribe(() => {
-            this.success.emit()
-        })
+        this._vaultService
+            .vaultControllerUpdate(vault, id)
+            .pipe(
+                mergeMap(() => this._vaultService.vaultControllerGetAll()),
+                mergeMap(res => {
+                    this._appService.vaults$.next(res)
+                    return this._bookService.bookControllerGetAll()
+                })
+            )
+            .subscribe(() => {
+                this.success.emit()
+            })
     }
 
     private _resetForm() {
