@@ -41,7 +41,7 @@ export class VaultFormComponent implements OnInit {
         }
     }
 
-    addVault(): void {
+    createVault(): void {
         if (this.vaultForm.invalid) {
             return
         }
