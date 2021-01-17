@@ -3,12 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { mergeMap } from 'rxjs/operators'
 
-import {
-    VaultService,
-    CreateBookDto,
-    BookService,
-    TagsService
-} from '../api/index'
+import { VaultService, BookService, TagsService } from '../api/index'
 
 import { AppService } from '../services/app.service'
 
@@ -121,7 +116,7 @@ export class BookFormComponent implements OnInit {
         if (this.bookForm.invalid) {
             return
         }
-        const bookData: CreateBookDto = this.bookForm.value
+        const bookData = this.bookForm.value
         this._bookService
             .bookControllerCreate([bookData])
             .pipe(

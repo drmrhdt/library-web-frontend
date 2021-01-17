@@ -1,6 +1,7 @@
 @import '../../styles/colors.scss';
 
 :host {
+  position: fixed;
   .side-menu {
     display: flex;
     flex-direction: column;
