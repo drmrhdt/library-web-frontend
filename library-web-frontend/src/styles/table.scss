@@ -21,7 +21,12 @@
     tr,
     td,
     th {
-      padding: 1rem;
+      padding: 0.5rem;
+    }
+
+    th:not(:first-of-type),
+    td:not(:first-of-type) {
+      text-align: center;
     }
 
     tr > th:not(:last-of-type),
@@ -53,4 +58,8 @@
 
 .center-text {
   text-align: center;
+}
+
+.left-text {
+  text-align: left !important;
 }

@@ -21,7 +21,7 @@
                     {{rowNumber + 1}}
                 </td>
                 <td class="center-text">{{row.books?.length}}</td>
-                <td>
+                <td class="left-text">
                     <ul *ngIf="row.books?.length; else emptyBlock">
                         <li *ngFor="let book of row.books">
                             {{book.name}}, {{book.author}}
