@@ -57,27 +57,39 @@
     </div>
 
     <div class="vault-details__footer">
-        <app-button class="btn--edit"
-                    (click)="isEditVault = true"
-                    [class]="'outlined'"
-                    [title]="'Редактировать'">
-        </app-button>
-        <app-button [class]="'outlined'"
-                    (click)="deleteVault(vault?.id)"
-                    [title]="'Удалить'">
-        </app-button>
+        <i class="icon icon-pencil"
+           (click)="toggleEditDialog(vault)"
+           [title]="'Редактировать'">
+        </i>
+        <i class="icon icon-bin"
+           (click)="toggleDeletingDialog(vault)"
+           [title]="'Удалить'">
+        </i>
     </div>
 </div>
 
 <router-outlet></router-outlet>
 
-<app-modal *ngIf="isEditVault"
+<app-modal *ngIf="isUpdatingDialogOpened"
            [isShowCloseBtn]="true"
            [modalTitle]="'Редактирование хранилища'"
            [bodyComponent]="editVault"
-           (close)="isEditVault = false">
+           (close)="toggleEditDialog()">
     <ng-template #editVault>
-        <app-vault-form (success)="isEditVault = false"
+        <app-vault-form (success)="toggleEditDialog()"
                         [vault]="filteredVaults[0]"></app-vault-form>
+    </ng-template>
+</app-modal>
+
+<app-modal *ngIf="isDeletingDialogOpened"
+           [isShowCloseBtn]="true"
+           [modalTitle]="'Удаление книги'"
+           [bodyComponent]="deletingVault"
+           [confirmText]="'Удалить'"
+           [isShowConfirmBtn]="true"
+           (close)="toggleDeletingDialog()"
+           (confirm)="deleteVault()">
+    <ng-template #deletingVault>
+        Вы уверены, что хотите удалить хранилище "{{vault?.name}}"?
     </ng-template>
 </app-modal>

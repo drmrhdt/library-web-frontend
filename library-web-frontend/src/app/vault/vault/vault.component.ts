@@ -14,7 +14,9 @@ import { BookService, VaultService } from '../../api/index'
 export class VaultComponent implements OnInit {
     vaults = []
     filteredVaults = []
-    isEditVault = false
+    isDeletingDialogOpened = false
+    isUpdatingDialogOpened = false
+    vault
 
     constructor(
         private _route: ActivatedRoute,
@@ -54,9 +56,9 @@ export class VaultComponent implements OnInit {
             })
     }
 
-    deleteVault(id: number): void {
+    deleteVault(): void {
         this._vaultService
-            .vaultControllerDeleteById(id)
+            .vaultControllerDeleteById(this.vault?.id)
             .pipe(
                 mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
@@ -64,6 +66,19 @@ export class VaultComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
-            .subscribe(res => this._appService.vaults$.next(res))
+            .subscribe(res => {
+                this._appService.vaults$.next(res)
+                this.toggleDeletingDialog(null)
+            })
+    }
+
+    toggleEditDialog(vault): void {
+        this.isUpdatingDialogOpened = !this.isUpdatingDialogOpened
+        this.vault = vault
+    }
+
+    toggleDeletingDialog(vault): void {
+        this.isDeletingDialogOpened = !this.isDeletingDialogOpened
+        this.vault = vault
     }
 }
