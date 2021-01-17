@@ -80,9 +80,10 @@ export class BookFormComponent implements OnInit {
     }
 
     private _setTags(): void {
-        this._tagService
-            .tagsControllerFindAll()
-            .subscribe(tags => (this.tags = tags))
+        this._tagService.tagsControllerFindAll().subscribe(tags => {
+            this.tags = tags
+            this._appService.tags$.next(tags)
+        })
     }
 
     private _setVault(): void {
@@ -122,7 +123,7 @@ export class BookFormComponent implements OnInit {
         }
         const bookData: CreateBookDto = this.bookForm.value
         this._bookService
-            .bookControllerCreate(bookData)
+            .bookControllerCreate([bookData])
             .pipe(
                 mergeMap(() => this._bookService.bookControllerGetAll()),
                 mergeMap(res => {
