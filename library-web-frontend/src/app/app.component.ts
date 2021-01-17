@@ -1,8 +1,8 @@
 import { Component } from '@angular/core'
 
+import { BookService, VaultService, TagsService } from './api/index'
+
 import { AppService } from './services/app.service'
-import { BookService } from './api/api/book.service'
-import { VaultService } from './api/api/vault.service'
 
 @Component({
     selector: 'app-root',
@@ -13,7 +13,8 @@ export class AppComponent {
     constructor(
         private _appService: AppService,
         private _bookService: BookService,
-        private _vaultService: VaultService
+        private _vaultService: VaultService,
+        private _tagsService: TagsService
     ) {
         this._bookService
             .bookControllerGetAll()
@@ -22,5 +23,9 @@ export class AppComponent {
         this._vaultService
             .vaultControllerGetAll()
             .subscribe(vaults => this._appService.vaults$.next(vaults))
+
+        this._tagsService
+            .tagsControllerFindAll()
+            .subscribe(tags => this._appService.tags$.next(tags))
     }
 }
