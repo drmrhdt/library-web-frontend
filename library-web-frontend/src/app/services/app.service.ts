@@ -7,4 +7,5 @@ import { BehaviorSubject } from 'rxjs'
 export class AppService {
     vaults$ = new BehaviorSubject([])
     books$ = new BehaviorSubject([])
+    tags$ = new BehaviorSubject([])
 }
