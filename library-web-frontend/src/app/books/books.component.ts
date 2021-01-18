@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { FormControl } from '@angular/forms'
 
 import { mergeMap } from 'rxjs/operators'
 
@@ -8,7 +9,6 @@ import { AppService } from '../services/app.service'
 import { BookService, VaultService } from '../api/index'
 
 import { getArrayFromNumber } from '../util/util'
-import { FormControl } from '@angular/forms'
 
 enum PaginationArrowsActions {
     DEC = 'dec',
