@@ -7,17 +7,36 @@ import * as XLSX from 'xlsx'
 import { AppService } from '../services/app.service'
 import { BookService, VaultService } from '../api/index'
 
+import { getArrayFromNumber } from '../util/util'
+import { FormControl } from '@angular/forms'
+
+enum PaginationArrowsActions {
+    DEC = 'dec',
+    INC = 'inc'
+}
+
 @Component({
     selector: 'app-books',
     templateUrl: './books.component.html',
     styleUrls: ['./books.component.scss']
 })
 export class BooksComponent implements OnInit {
-    books$
     book
+    books = []
+    bookOnCurrentPage = []
+
     isDeletingDialogOpened = false
     isUpdatingDialogOpened = false
     isExcelFile = false
+
+    BOOKS_PER_PAGE = 10
+    DEFAULT_START_PAGE = 1
+    VISIBLE_PAGES = 5
+
+    currentPage = new FormControl(this.DEFAULT_START_PAGE)
+    arrayOfPages: number[] = []
+
+    PaginationArrowsActions = PaginationArrowsActions
 
     @ViewChild('inputFile') inputFile: ElementRef
 
@@ -28,10 +47,57 @@ export class BooksComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.books$ = this._appService.books$
+        this._appService.books$.subscribe(books => {
+            this._setSortBooksAlphabeticallyByNames(books)
+            this._setPagination()
+            this._setPaginatedBooks()
+        })
+
+        this.currentPage.valueChanges.subscribe((page: number) =>
+            this._updateBooksByPage(page)
+        )
     }
 
-    deleteBook(): void {
+    private _setSortBooksAlphabeticallyByNames(books) {
+        this.books = books.sort((fBook, sBook) =>
+            fBook.name.localeCompare(sBook.name)
+        )
+    }
+
+    private _setPagination(): void {
+        const numberOfPages = Math.floor(
+            this.books.length / this.BOOKS_PER_PAGE
+        )
+        this.arrayOfPages = getArrayFromNumber(numberOfPages, true, true)
+    }
+
+    private _setPaginatedBooks(): void {
+        this.bookOnCurrentPage = this.books.slice(1, this.BOOKS_PER_PAGE)
+    }
+
+    onChangeCurrentPage(page?: number, action?: PaginationArrowsActions): void {
+        if (page) {
+            this.currentPage.patchValue(page)
+        } else {
+            this.currentPage.patchValue(
+                action === PaginationArrowsActions.INC
+                    ? this.currentPage.value + 1
+                    : this.currentPage.value - 1
+            )
+        }
+    }
+
+    private _updateBooksByPage(page: number): void {
+        this.bookOnCurrentPage =
+            page === 0
+                ? this.books.slice(0, this.BOOKS_PER_PAGE)
+                : this.books.slice(
+                      page * this.BOOKS_PER_PAGE,
+                      page * this.BOOKS_PER_PAGE + this.BOOKS_PER_PAGE
+                  )
+    }
+
+    onDeleteBook(): void {
         this._bookService
             .bookControllerDeleteById(this.book?.id)
             .pipe(
@@ -43,21 +109,21 @@ export class BooksComponent implements OnInit {
             )
             .subscribe(res => {
                 this._appService.vaults$.next(res)
-                this.toggleDeletingDialog(null)
+                this.onToggleDeletingDialog(null)
             })
     }
 
-    toggleEditDialog(book): void {
+    onToggleEditDialog(book): void {
         this.isUpdatingDialogOpened = !this.isUpdatingDialogOpened
         this.book = book
     }
 
-    toggleDeletingDialog(book): void {
+    onToggleDeletingDialog(book): void {
         this.isDeletingDialogOpened = !this.isDeletingDialogOpened
         this.book = book
     }
 
-    private importBooksToDB(books): void {
+    private _importBooksToDB(books): void {
         this._bookService
             .bookControllerCreate(books)
             .pipe(
@@ -70,7 +136,7 @@ export class BooksComponent implements OnInit {
             .subscribe(res => this._appService.vaults$.next(res))
     }
 
-    onChange(event): void {
+    onChangeImportFile(event): void {
         let data
         const target: DataTransfer = <DataTransfer>event.target
         this.isExcelFile = !!target.files[0].name.match(/(.xls|.xlsx)/)
@@ -115,7 +181,7 @@ export class BooksComponent implements OnInit {
                 book.tags = tagObjects
             })
 
-            this.importBooksToDB(data)
+            this._importBooksToDB(data)
         }
     }
 }

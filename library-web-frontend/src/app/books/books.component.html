@@ -1,6 +1,10 @@
 <input type="file"
-       (change)="onChange($event)"
+       (change)="onChangeImportFile($event)"
        #inputFile>
+
+<span>
+    Всего книг: {{books.length}}
+</span>
 
 <table>
     <thead>
@@ -18,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let book of books$ | async">
+        <tr *ngFor="let book of bookOnCurrentPage">
             <td>{{book?.name}}</td>
             <td>{{book?.author}}</td>
             <td>{{book?.description}}</td>
@@ -36,11 +40,11 @@
             </td>
             <td>
                 <i class="icon icon-pencil"
-                   (click)="toggleEditDialog(book)"
+                   (click)="onToggleEditDialog(book)"
                    [title]="'Редактировать'">
                 </i>
                 <i class="icon icon-bin"
-                   (click)="toggleDeletingDialog(book)"
+                   (click)="onToggleDeletingDialog(book)"
                    [title]="'Удалить'">
                 </i>
             </td>
@@ -48,14 +52,48 @@
     </tbody>
 </table>
 
+<div class="pagination">
+    <i class="icon icon-chevron-left"
+       [class.disabled]="currentPage.value === DEFAULT_START_PAGE"
+       (click)="onChangeCurrentPage(null, PaginationArrowsActions.DEC)"
+       [title]="'Предыдущая страница'">
+    </i>
+
+    <div class="pagination__btn"
+         *ngFor="let page of arrayOfPages; let index = page;"
+         (click)="onChangeCurrentPage(page)"
+         [class.currentPage]="currentPage.value === page">
+        {{page}}
+    </div>
+
+    <i class="icon icon-chevron-right"
+       [class.disabled]="currentPage.value ===  arrayOfPages.length"
+       (click)="onChangeCurrentPage(null, PaginationArrowsActions.INC)"
+       [title]="'Следующая страница'">
+    </i>
+</div>
+<div>
+    <label for="currentPage">
+        Выбрать страницу:
+    </label>
+    <select [formControl]="currentPage"
+            id="currentPage">
+        <option *ngFor="let page of arrayOfPages"
+                [ngValue]="page"
+                [selected]="page === currentPage.value">
+            {{page}}
+        </option>
+    </select>
+</div>
+
 <app-modal *ngIf="isUpdatingDialogOpened"
            [isShowCloseBtn]="true"
            [modalTitle]="'Редактирование книги'"
            [bodyComponent]="editBook"
-           (close)="toggleEditDialog()">
+           (close)="onToggleEditDialog()">
     <ng-template #editBook>
         <app-book-form [book]="book"
-                       (success)="toggleEditDialog()">
+                       (success)="onToggleEditDialog()">
         </app-book-form>
     </ng-template>
 </app-modal>
@@ -66,8 +104,8 @@
            [bodyComponent]="deletingBook"
            [confirmText]="'Удалить'"
            [isShowConfirmBtn]="true"
-           (close)="toggleDeletingDialog()"
-           (confirm)="deleteBook()">
+           (close)="onToggleDeletingDialog()"
+           (confirm)="onDeleteBook()">
     <ng-template #deletingBook>
         Вы уверены, что хотите удалить книгу "{{book?.name}}"?
     </ng-template>

@@ -1,4 +1,6 @@
 @import '../../styles/table.scss';
+@import '../../styles/colors.scss';
+@import '../../styles/shapes.scss';
 
 :host {
   .icon {
@@ -6,6 +8,32 @@
 
     &-bin {
       margin-left: 0.6rem;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    width: 7rem;
+
+    &__btn {
+      width: 1rem;
+
+      cursor: pointer;
+    }
+
+    .currentPage {
+      text-align: center;
+      color: $color-white;
+
+      background-color: $color-primary;
+      border-radius: $border-radius;
+    }
+
+    .disabled {
+      color: $color-menu-item-checked;
+
+      cursor: default;
     }
   }
 }
