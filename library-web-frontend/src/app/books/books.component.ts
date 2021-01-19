@@ -76,6 +76,9 @@ export class BooksComponent implements OnInit {
     }
 
     onChangeCurrentPage(page?: number, action?: PaginationArrowsActions): void {
+        if (page === this.currentPage.value) {
+            return
+        }
         if (page) {
             this.currentPage.patchValue(page)
         } else {
