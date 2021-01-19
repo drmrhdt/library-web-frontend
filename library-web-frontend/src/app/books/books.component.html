@@ -1,12 +1,13 @@
-<input type="file"
-       (change)="onChangeImportFile($event)"
-       #inputFile>
+<div class="books__header">
+    <input type="file"
+           (change)="onChangeImportFile($event)"
+           #inputFile>
+    <span>
+        Всего книг: {{books.length}}
+    </span>
+</div>
 
-<span>
-    Всего книг: {{books.length}}
-</span>
-
-<table>
+<table class="books__table">
     <thead>
         <tr>
             <th>Название</th>
@@ -53,37 +54,39 @@
 </table>
 
 <div class="pagination">
-    <i class="icon icon-chevron-left"
-       [class.disabled]="currentPage.value === DEFAULT_START_PAGE"
-       (click)="onChangeCurrentPage(null, PaginationArrowsActions.DEC)"
-       [title]="'Предыдущая страница'">
-    </i>
-
-    <div class="pagination__btn"
-         *ngFor="let page of arrayOfPages; let index = page;"
-         (click)="onChangeCurrentPage(page)"
-         [class.currentPage]="currentPage.value === page">
-        {{page}}
+    <div class="pagination__page-selector">
+        <label for="currentPage">
+            Выбрать страницу:
+        </label>
+        <select [formControl]="currentPage"
+                id="currentPage">
+            <option *ngFor="let page of arrayOfPages"
+                    [ngValue]="page"
+                    [selected]="page === currentPage.value">
+                {{page}}
+            </option>
+        </select>
     </div>
+    <div class="pagination__paginator">
+        <i class="icon icon-chevron-left"
+           [class.disabled]="currentPage.value === DEFAULT_START_PAGE"
+           (click)="currentPage.value === DEFAULT_START_PAGE ? '' : onChangeCurrentPage(null, PaginationArrowsActions.DEC)"
+           [title]="'Предыдущая страница'">
+        </i>
 
-    <i class="icon icon-chevron-right"
-       [class.disabled]="currentPage.value ===  arrayOfPages.length"
-       (click)="onChangeCurrentPage(null, PaginationArrowsActions.INC)"
-       [title]="'Следующая страница'">
-    </i>
-</div>
-<div>
-    <label for="currentPage">
-        Выбрать страницу:
-    </label>
-    <select [formControl]="currentPage"
-            id="currentPage">
-        <option *ngFor="let page of arrayOfPages"
-                [ngValue]="page"
-                [selected]="page === currentPage.value">
+        <div class="pagination__btn"
+             *ngFor="let page of arrayOfPages; let index = page;"
+             (click)="onChangeCurrentPage(page)"
+             [class.currentPage]="currentPage.value === page">
             {{page}}
-        </option>
-    </select>
+        </div>
+
+        <i class="icon icon-chevron-right"
+           [class.disabled]="currentPage.value ===  arrayOfPages.length"
+           (click)="currentPage.value === arrayOfPages.length ? '' : onChangeCurrentPage(null, PaginationArrowsActions.INC)"
+           [title]="'Следующая страница'">
+        </i>
+    </div>
 </div>
 
 <app-modal *ngIf="isUpdatingDialogOpened"
