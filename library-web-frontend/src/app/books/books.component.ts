@@ -187,4 +187,52 @@ export class BooksComponent implements OnInit {
             this._importBooksToDB(data)
         }
     }
+
+    onExportBooks(link: HTMLLinkElement): void {
+        const file = []
+        this.books.forEach(book => {
+            const row = {
+                Название: book.name,
+                Автор: book.author,
+                Описание: book.description,
+                Хранилище: book.vault.name,
+                Полка: book.shelf,
+                Ряд: book.row,
+                Номер: book.number,
+                Статус: book.status,
+                'Причина отсутствия': book.reasonOfMissing,
+                Тэги: this._generateTagsString(book.tags)
+            }
+            file.push(row)
+        })
+
+        const wsFile = XLSX.utils.json_to_sheet(file)
+        // wsFile['!merges'] = mergeByInterval
+
+        const wb = XLSX.utils.book_new()
+
+        XLSX.utils.book_append_sheet(wb, wsFile, 'List1')
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+        const blob = new Blob([wbout], { type: 'application/octet-stream' })
+
+        const fileName = `exported.xlsx`
+
+        this._download(link, blob, fileName)
+    }
+
+    private _generateTagsString(tags: { id: number; name: string }[]): string {
+        let str = ''
+        tags.forEach((tag, i) => {
+            str = str + tag.name + (i === tags.length - 1 ? '' : ',')
+            return str + tag.name + (i === tags.length - 1 ? '' : ',')
+        })
+        return str
+    }
+
+    private _download(link: HTMLLinkElement, blob: Blob, fileName: string) {
+        link.setAttribute('download', fileName)
+        link.setAttribute('href', window.URL.createObjectURL(blob))
+
+        link.click()
+    }
 }
