@@ -41,15 +41,15 @@
     </thead>
     <tbody>
         <tr *ngFor="let book of bookOnCurrentPage">
-            <td>{{book?.name}}</td>
-            <td>{{book?.author}}</td>
-            <td>{{book?.description}}</td>
-            <td [routerLink]="['..', 'vault', book?.vault?.id]">
-                {{book?.vault?.name || ' -'}}
+            <td>{{book?.name || '-'}}</td>
+            <td>{{book?.author || '-'}}</td>
+            <td>{{book?.description || '-'}}</td>
+            <td [routerLink]="book?.vault?.id ? ['..', 'vault', book?.vault?.id] : '.'">
+                {{book?.vault?.name || '-'}}
             </td>
-            <td>{{book?.shelf}}</td>
-            <td>{{book?.row}}</td>
-            <td>{{book?.number}}</td>
+            <td>{{book?.shelf || '-'}}</td>
+            <td>{{book?.row || '-'}}</td>
+            <td>{{book?.number || '-'}}</td>
             <td>
                 <i *ngIf="book?.status === 'inPlace'; else missingBook"
                    class="icon icon-check_circle"
