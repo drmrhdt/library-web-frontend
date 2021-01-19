@@ -1,76 +1,80 @@
 @import '../../styles/table.scss';
 @import '../../styles/colors.scss';
-@import '../../styles/shapes.scss';
-@import '../../styles/mixins.scss';
 
 :host {
-    .icon {
-        cursor: pointer;
+  .icon {
+    cursor: pointer;
 
-        &-bin {
-            margin: 0.6rem 0;
-        }
+    &-bin {
+      margin-left: 0.6rem;
     }
 
-    .books {
-        &__header,
-        &__table {
-            margin-bottom: 1rem;
-        }
+    &-error {
+      color: $color-danger;
     }
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .icon-chevron {
-            &-left {
-                margin-right: 0.5rem;
-            }
-            &-right {
-                margin-left: 0.5rem;
-            }
-        }
-
-        &__page-selector {
-            margin-right: 1rem;
-        }
-
-        &__paginator {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            align-self: center;
-            width: 8rem;
-            padding: 0.6rem 0.7rem;
-
-            @include add-shadow();
-        }
-
-        &__btn {
-            width: 0.5rem;
-            padding: 0.1rem 0.4rem;
-
-            background-color: transparentize(
-                $color: $color-menu-item-checked,
-                $amount: 0.7
-            );
-            cursor: pointer;
-        }
-
-        .currentPage {
-            text-align: center;
-            color: $color-white;
-
-            background-color: $color-primary;
-            // border-radius: $border-radius;
-        }
-
-        .disabled {
-            color: $color-menu-item-checked;
-
-            cursor: default;
-        }
+    &-check_circle {
+      color: $color-success;
     }
+  }
+
+  .books {
+    &__header,
+    &__table {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .icon-navigate {
+      &-before {
+        margin-right: 0.5rem;
+      }
+      &_next {
+        margin-left: 0.5rem;
+      }
+    }
+
+    &__page-selector {
+      margin-right: 1rem;
+    }
+
+    &__paginator {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 10rem;
+    }
+
+    &__btns {
+      display: flex;
+    }
+
+    &__btn {
+      padding: 0.1rem 0.4rem;
+
+      background-color: transparentize(
+      $color: $color-menu-item-checked,
+      $amount: 0.7
+      );
+      cursor: pointer;
+    }
+
+    .currentPage {
+      text-align: center;
+      color: $color-white;
+
+      background-color: $color-primary;
+    }
+
+    .disabled {
+      color: $color-menu-item-checked;
+
+      cursor: default;
+    }
+  }
 }

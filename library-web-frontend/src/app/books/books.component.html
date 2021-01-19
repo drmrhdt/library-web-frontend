@@ -1,8 +1,21 @@
 <div class="books__header">
+    <label for="importBooks">
+        Импортировать книги
+        <i class="icon icon-file_download"
+           [title]="'Импортировать книги'">
+        </i>
+    </label>
     <input type="file"
+           hidden
+           id="importBooks"
            (change)="onChangeImportFile($event)"
            #inputFile>
-    <button (click)="onExportBooks(exportLink)">Экспортировать книги</button>
+    <label (click)="onExportBooks(exportLink)">
+        Экспортировать книги
+        <i class="icon icon-file_upload"
+           [title]="'Экспортировать книги'">
+        </i>
+    </label>
     <a hidden
        #exportLink>
     </a>
@@ -14,7 +27,7 @@
 <table class="books__table">
     <thead>
         <tr>
-            <th>Название</th>
+            <th class="left-text">Название</th>
             <th>Автор</th>
             <th>Описание</th>
             <th>Хранилище</th>
@@ -32,12 +45,22 @@
             <td>{{book?.author}}</td>
             <td>{{book?.description}}</td>
             <td [routerLink]="['..', 'vault', book?.vault?.id]">
-                {{book?.vault?.name || '-'}}
+                {{book?.vault?.name || ' -'}}
             </td>
             <td>{{book?.shelf}}</td>
             <td>{{book?.row}}</td>
             <td>{{book?.number}}</td>
-            <td>{{book?.status}}</td>
+            <td>
+                <i *ngIf="book?.status === 'inPlace'; else missingBook"
+                   class="icon icon-check_circle"
+                   [title]="'На месте'">
+                </i>
+                <ng-template #missingBook>
+                    <i class="icon icon-error"
+                       [title]="'Отсутствует'">
+                    </i>
+                </ng-template>
+            </td>
             <td>
                 <span *ngFor="let tag of book.tags; let lastTag = last">
                     {{tag.name}}{{lastTag ? '' : ','}}
@@ -72,20 +95,22 @@
         </select>
     </div>
     <div class="pagination__paginator">
-        <i class="icon icon-chevron-left"
+        <i class="icon icon-navigate_before"
            [class.disabled]="currentPage.value === DEFAULT_START_PAGE"
            (click)="currentPage.value === DEFAULT_START_PAGE ? '' : onChangeCurrentPage(null, PaginationArrowsActions.DEC)"
            [title]="'Предыдущая страница'">
         </i>
 
-        <div class="pagination__btn"
-             *ngFor="let page of arrayOfPages; let index = page;"
-             (click)="onChangeCurrentPage(page)"
-             [class.currentPage]="currentPage.value === page">
-            {{page}}
+        <div class="pagination__btns">
+            <div class="pagination__btn"
+                 *ngFor="let page of arrayOfPages; let index = page;"
+                 (click)="onChangeCurrentPage(page)"
+                 [class.currentPage]="currentPage.value === page">
+                {{page}}
+            </div>
         </div>
 
-        <i class="icon icon-chevron-right"
+        <i class="icon icon-navigate_next"
            [class.disabled]="currentPage.value ===  arrayOfPages.length"
            (click)="currentPage.value === arrayOfPages.length ? '' : onChangeCurrentPage(null, PaginationArrowsActions.INC)"
            [title]="'Следующая страница'">
