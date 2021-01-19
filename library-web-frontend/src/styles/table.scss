@@ -2,67 +2,62 @@
 @import './mixins.scss';
 
 :host {
-    table {
-        width: 100%;
+  table {
+    width: 100%;
 
-        border-collapse: collapse;
+    border-collapse: collapse;
 
-        @include add-shadow;
+    @include add-shadow;
 
-        thead {
-            color: $color-white;
+    thead {
+      color: $color-white;
 
-            background-color: $color-primary;
-            box-shadow: 0 0 0
-                    transparentize($color: $color-black, $amount: 0.95),
-                0 0 2px transparentize($color: $color-black, $amount: 0.86);
-        }
-
-        tr,
-        td {
-            padding: 0.5rem;
-        }
-
-        th {
-            padding: 1rem;
-        }
-
-        th:not(:first-of-type),
-        td:not(:first-of-type) {
-            text-align: center;
-        }
-
-        tr > th:not(:last-of-type),
-        tr > td:not(:last-of-type) {
-            width: 10%;
-        }
-
-        td {
-            border-bottom: 1px solid $color-gray-1;
-        }
-
-        .rows:last-of-type td {
-            border: none;
-        }
+      background-color: $color-primary;
+      box-shadow: 0 0 0
+      transparentize($color: $color-black, $amount: 0.95),
+      0 0 2px transparentize($color: $color-black, $amount: 0.86);
     }
 
-    .shelf-number {
-        border-right: 1px solid $color-gray-1;
-
-        &:last-of-type {
-            border-bottom: none;
-        }
+    tr,
+    td {
+      padding: 0.5rem;
     }
+
+    th {
+      padding: 0.6rem;
+    }
+
+    th:not(:first-of-type),
+    td:not(:first-of-type) {
+      text-align: center;
+    }
+
+    td {
+      border-bottom: 1px solid $color-gray-1;
+    }
+
+    .rows:last-of-type td {
+      border: none;
+    }
+  }
+
+  .shelf-number {
+    border-right: 1px solid $color-gray-1;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
 }
 
 .icon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .center-text {
-    text-align: center;
+  text-align: center;
 }
 
 .left-text {
-    text-align: left !important;
+  text-align: left !important;
 }
