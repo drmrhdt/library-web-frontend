@@ -72,7 +72,7 @@ export class BooksComponent implements OnInit {
     }
 
     private _setPaginatedBooks(): void {
-        this.bookOnCurrentPage = this.books.slice(1, this.BOOKS_PER_PAGE)
+        this.bookOnCurrentPage = this.books.slice(0, this.BOOKS_PER_PAGE)
     }
 
     onChangeCurrentPage(page?: number, action?: PaginationArrowsActions): void {
@@ -92,7 +92,7 @@ export class BooksComponent implements OnInit {
 
     private _updateBooksByPage(page: number): void {
         this.bookOnCurrentPage =
-            page === 0
+            page === 1
                 ? this.books.slice(0, this.BOOKS_PER_PAGE)
                 : this.books.slice(
                       page * this.BOOKS_PER_PAGE,
@@ -207,15 +207,12 @@ export class BooksComponent implements OnInit {
         })
 
         const wsFile = XLSX.utils.json_to_sheet(file)
-        // wsFile['!merges'] = mergeByInterval
-
         const wb = XLSX.utils.book_new()
-
         XLSX.utils.book_append_sheet(wb, wsFile, 'List1')
         const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
         const blob = new Blob([wbout], { type: 'application/octet-stream' })
 
-        const fileName = `exported.xlsx`
+        const fileName = `exportedBooks.xlsx`
 
         this._download(link, blob, fileName)
     }
