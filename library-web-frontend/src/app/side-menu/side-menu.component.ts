@@ -12,14 +12,7 @@ export class SideMenuComponent implements OnInit {
     menu = []
     bookMenu = {
         name: 'Книги',
-        route: 'books',
-        items: [
-            {
-                name: 'Нерассортированные',
-                route: 'withoutVault'
-            },
-            { name: 'Отсутствующие', route: 'missing' }
-        ]
+        route: 'books'
     }
     vaults
     isShowModalDialog = false
