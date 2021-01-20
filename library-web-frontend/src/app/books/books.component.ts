@@ -34,6 +34,8 @@ export class BooksComponent implements OnInit {
     DEFAULT_START_PAGE = 1
     VISIBLE_PAGES = 5
 
+    ALL = 'All'
+
     currentPage = new FormControl(this.DEFAULT_START_PAGE)
     pages: number[] = []
 
@@ -52,20 +54,20 @@ export class BooksComponent implements OnInit {
 
     ngOnInit(): void {
         this.filtersForm = this._formBuilder.group({
-            status: ['all'],
-            vault: ['all'],
-            tags: ['all']
+            status: [this.ALL],
+            vault: [this.ALL],
+            tags: [this.ALL]
         })
 
         this.filtersForm.valueChanges.subscribe(filters => {
             this.filteredBooks = this.books
                 .filter(book =>
-                    filters.status === 'all'
+                    filters.status === this.ALL
                         ? book
                         : book.status === filters.status
                 )
                 .filter(book => {
-                    if (filters.vault === 'all') {
+                    if (filters.vault === this.ALL) {
                         return book
                     } else if (filters.vault === 'withoutVault') {
                         return !book.vault
@@ -74,7 +76,7 @@ export class BooksComponent implements OnInit {
                     }
                 })
                 .filter(book =>
-                    filters.tags === 'all'
+                    filters.tags === this.ALL
                         ? book
                         : book.tags.find(tag => filters.tags === tag.name)
                 )
