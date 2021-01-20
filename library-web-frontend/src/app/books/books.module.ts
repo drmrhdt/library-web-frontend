@@ -11,14 +11,7 @@ import { BooksComponent } from './books.component'
 const routes: Routes = [
     {
         path: '',
-        component: BooksComponent,
-        children: [
-            {
-                path: ':type',
-                component: BooksComponent
-                //here we need resolver to filter data before page loaded
-            }
-        ]
+        component: BooksComponent
     }
 ]
 

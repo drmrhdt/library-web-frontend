@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { FormControl } from '@angular/forms'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 
-import { mergeMap } from 'rxjs/operators'
+import { mergeMap, pairwise } from 'rxjs/operators'
 
 import * as XLSX from 'xlsx'
 
@@ -14,7 +14,6 @@ enum PaginationArrowsActions {
     DEC = 'dec',
     INC = 'inc'
 }
-
 @Component({
     selector: 'app-books',
     templateUrl: './books.component.html',
@@ -23,7 +22,8 @@ enum PaginationArrowsActions {
 export class BooksComponent implements OnInit {
     book
     books = []
-    bookOnCurrentPage = []
+    filteredBooks = []
+    booksOnCurrentPage = []
 
     isDeletingDialogOpened = false
     isUpdatingDialogOpened = false
@@ -34,45 +34,82 @@ export class BooksComponent implements OnInit {
     VISIBLE_PAGES = 5
 
     currentPage = new FormControl(this.DEFAULT_START_PAGE)
-    arrayOfPages: number[] = []
+    pages: number[] = []
+
+    filtersForm: FormGroup
 
     PaginationArrowsActions = PaginationArrowsActions
 
     @ViewChild('inputFile') inputFile: ElementRef
 
     constructor(
+        private _formBuilder: FormBuilder,
         private _appService: AppService,
         private _bookService: BookService,
         private _vaultService: VaultService
     ) {}
 
     ngOnInit(): void {
-        this._appService.books$.subscribe(books => {
-            this._setSortBooksAlphabeticallyByNames(books)
+        this.filtersForm = this._formBuilder.group({
+            status: ['all'],
+            vault: ['all']
+        })
+
+        this.filtersForm.valueChanges.subscribe(filters => {
+            this.filteredBooks = this.books
+                .filter(book =>
+                    filters.status === 'all'
+                        ? book
+                        : book.status === filters.status
+                )
+                .filter(book => {
+                    if (filters.vault === 'all') {
+                        return book
+                    } else if (filters.vault === 'withoutVault') {
+                        return !book.vault
+                    } else if (filters.vault === 'withVault') {
+                        return book.vault
+                    }
+                })
+            this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
             this._setPagination()
             this._setPaginatedBooks()
         })
 
-        this.currentPage.valueChanges.subscribe((page: number) =>
-            this._updateBooksByPage(page)
-        )
+        this._appService.books$.subscribe(books => {
+            this.books = books
+            this.filteredBooks = this.books
+            this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
+            this._setPagination()
+            this._setPaginatedBooks()
+        })
+
+        this.currentPage.valueChanges
+            .pipe(pairwise())
+            .subscribe(([prevPage, nextPage]) =>
+                this._updateBooksByPage(prevPage, nextPage)
+            )
     }
 
-    private _setSortBooksAlphabeticallyByNames(books) {
-        this.books = books.sort((fBook, sBook) =>
+    private _setSortBooksAlphabeticallyByNames(books): void {
+        this.filteredBooks = books.sort((fBook, sBook) =>
             fBook.name.localeCompare(sBook.name)
         )
     }
 
     private _setPagination(): void {
-        const numberOfPages = Math.floor(
-            this.books.length / this.BOOKS_PER_PAGE
+        const numberOfPages = Math.ceil(
+            this.filteredBooks.length / this.BOOKS_PER_PAGE
         )
-        this.arrayOfPages = getArrayFromNumber(numberOfPages, true, true)
+        this.pages = getArrayFromNumber(numberOfPages, true, true)
+        this.currentPage.patchValue(this.pages[0])
     }
 
     private _setPaginatedBooks(): void {
-        this.bookOnCurrentPage = this.books.slice(0, this.BOOKS_PER_PAGE)
+        this.booksOnCurrentPage = this.filteredBooks.slice(
+            0,
+            this.BOOKS_PER_PAGE
+        )
     }
 
     onChangeCurrentPage(page?: number, action?: PaginationArrowsActions): void {
@@ -90,13 +127,13 @@ export class BooksComponent implements OnInit {
         }
     }
 
-    private _updateBooksByPage(page: number): void {
-        this.bookOnCurrentPage =
-            page === 1
-                ? this.books.slice(0, this.BOOKS_PER_PAGE)
-                : this.books.slice(
-                      page * this.BOOKS_PER_PAGE,
-                      page * this.BOOKS_PER_PAGE + this.BOOKS_PER_PAGE
+    private _updateBooksByPage(prevPage: number, nextPage: number): void {
+        this.booksOnCurrentPage =
+            nextPage === this.DEFAULT_START_PAGE
+                ? this.filteredBooks.slice(0, this.BOOKS_PER_PAGE)
+                : this.filteredBooks.slice(
+                      prevPage * this.BOOKS_PER_PAGE,
+                      prevPage * this.BOOKS_PER_PAGE + this.BOOKS_PER_PAGE
                   )
     }
 
@@ -192,16 +229,16 @@ export class BooksComponent implements OnInit {
         const file = []
         this.books.forEach(book => {
             const row = {
-                Название: book.name,
-                Автор: book.author,
-                Описание: book.description,
-                Хранилище: book.vault.name,
-                Полка: book.shelf,
-                Ряд: book.row,
-                Номер: book.number,
-                Статус: book.status,
-                'Причина отсутствия': book.reasonOfMissing,
-                Тэги: this._generateTagsString(book.tags)
+                Название: book?.name,
+                Автор: book?.author,
+                Описание: book?.description,
+                Хранилище: book?.vault?.name,
+                Полка: book?.shelf,
+                Ряд: book?.row,
+                Номер: book?.number,
+                Статус: book?.status,
+                'Причина отсутствия': book?.reasonOfMissing,
+                Тэги: this._generateTagsString(book?.tags)
             }
             file.push(row)
         })
