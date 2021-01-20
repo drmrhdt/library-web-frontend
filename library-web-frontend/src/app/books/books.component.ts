@@ -34,7 +34,7 @@ export class BooksComponent implements OnInit {
     DEFAULT_START_PAGE = 1
     VISIBLE_PAGES = 5
 
-    ALL = 'All'
+    ALL = 'all'
 
     currentPage = new FormControl(this.DEFAULT_START_PAGE)
     pages: number[] = []

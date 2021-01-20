@@ -39,7 +39,7 @@
                     Хранилище
                     <select name="vault"
                             formControlName="vault">
-                        <option value="all"
+                        <option [value]="ALL"
                                 selected>Все</option>
                         <option value="withoutVault">Без хранилища</option>
                         <option value="withVault">Только в хранилище</option>
@@ -52,7 +52,7 @@
                     Статус
                     <select name="status"
                             formControlName="status">
-                        <option value="all"
+                        <option [value]="ALL"
                                 selected>Все</option>
                         <option value="inPlace">На месте</option>
                         <option value="missing">Отсутствуют</option>
@@ -62,7 +62,7 @@
                     Теги
                     <select name="tags"
                             formControlName="tags">
-                        <option value="all"
+                        <option [value]="ALL"
                                 selected>Все</option>
                         <option *ngFor="let tag of tags"
                                 [value]="tag.name">{{tag.name}}</option>
