@@ -24,6 +24,7 @@ export class BooksComponent implements OnInit {
     books = []
     filteredBooks = []
     booksOnCurrentPage = []
+    tags = []
 
     isDeletingDialogOpened = false
     isUpdatingDialogOpened = false
@@ -52,7 +53,8 @@ export class BooksComponent implements OnInit {
     ngOnInit(): void {
         this.filtersForm = this._formBuilder.group({
             status: ['all'],
-            vault: ['all']
+            vault: ['all'],
+            tags: ['all']
         })
 
         this.filtersForm.valueChanges.subscribe(filters => {
@@ -71,10 +73,18 @@ export class BooksComponent implements OnInit {
                         return book.vault
                     }
                 })
+                .filter(book =>
+                    filters.tags === 'all'
+                        ? book
+                        : book.tags.find(tag => filters.tags === tag.name)
+                )
+
             this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
             this._setPagination()
             this._setPaginatedBooks()
         })
+
+        this._appService.tags$.subscribe(tags => (this.tags = tags))
 
         this._appService.books$.subscribe(books => {
             this.books = books
