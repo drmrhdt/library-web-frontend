@@ -9,10 +9,15 @@
             <ul>
                 <li class="outer-menu-item"
                     *ngFor="let menuItem of menu">
-                    <span class="outer-menu-item__text"
-                          [routerLink]="menuItem.route">
-                        {{menuItem.name}}
-                    </span>
+                    <div class="outer-menu-item__title"
+                         [routerLink]="menuItem.route">
+                        <span class="outer-menu-item__text">
+                            {{menuItem.name}}
+                        </span>
+                        <i class="icon icon-check"
+                           *ngIf="isOuterMenuItemChecked(menuItem.route)">
+                        </i>
+                    </div>
                     <ul *ngIf="menuItem.items">
                         <li class="nested-menu-item"
                             *ngFor="let item of menuItem.items"

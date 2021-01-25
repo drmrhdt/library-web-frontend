@@ -40,6 +40,10 @@ export class SideMenuComponent implements OnInit {
         })
     }
 
+    isOuterMenuItemChecked(route): boolean {
+        return this._router.url.includes(route)
+    }
+
     isNestedMenuItemChecked(route): boolean {
         const parsedUrl = this._router.url.split('/')
         return parsedUrl[parsedUrl.length - 1] == route
