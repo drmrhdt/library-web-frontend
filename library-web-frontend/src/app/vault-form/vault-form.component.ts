@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
-import { mergeMap } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { mergeMap, takeUntil } from 'rxjs/operators'
 
 import { VaultService, BookService, CreateVaultDto } from '../api/index'
 
@@ -18,6 +19,8 @@ export class VaultFormComponent implements OnInit {
     @Output() success: EventEmitter<boolean> = new EventEmitter()
 
     @Input() vault
+
+    private _unsubscriber$ = new Subject()
 
     constructor(
         private _formBuilder: FormBuilder,
@@ -50,6 +53,7 @@ export class VaultFormComponent implements OnInit {
         this._vaultService
             .vaultControllerCreate(vaultData)
             .pipe(
+                takeUntil(this._unsubscriber$),
                 mergeMap(() => this._vaultService.vaultControllerGetAll()),
                 mergeMap(res => {
                     this._appService.vaults$.next(res)
@@ -67,6 +71,7 @@ export class VaultFormComponent implements OnInit {
         this._vaultService
             .vaultControllerUpdate(vault, id)
             .pipe(
+                takeUntil(this._unsubscriber$),
                 mergeMap(() => this._vaultService.vaultControllerGetAll()),
                 mergeMap(res => {
                     this._appService.vaults$.next(res)

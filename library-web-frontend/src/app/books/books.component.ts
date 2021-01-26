@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 
-import { mergeMap, pairwise } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { mergeMap, pairwise, takeUntil } from 'rxjs/operators'
 
 import * as XLSX from 'xlsx'
 
 import { AppService } from '../services/app.service'
+
 import { BookService, VaultService } from '../api/index'
 
 import { getArrayFromNumber } from '../util/util'
@@ -46,6 +48,8 @@ export class BooksComponent implements OnInit {
 
     @ViewChild('inputFile') inputFile: ElementRef
 
+    private _unsubscriber$ = new Subject()
+
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
@@ -60,49 +64,58 @@ export class BooksComponent implements OnInit {
             tags: [this.ALL]
         })
 
-        this._appService.vaults$.subscribe(vaults => (this.vaults = vaults))
+        this._appService.vaults$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(vaults => (this.vaults = vaults))
 
-        this.filtersForm.valueChanges.subscribe(filters => {
-            this.filteredBooks = this.books
-                .filter(book =>
-                    filters.status === this.ALL
-                        ? book
-                        : book.status === filters.status
-                )
-                .filter(book => {
-                    if (filters.vault === this.ALL) {
-                        return book
-                    } else if (filters.vault === 'withoutVault') {
-                        return !book.vault
-                    } else if (filters.vault === 'withVault') {
-                        return book.vault
-                    } else if (typeof +filters.vault === 'number') {
-                        return book?.vault?.id === +filters.vault
-                    }
-                })
-                .filter(book =>
-                    filters.tags === this.ALL
-                        ? book
-                        : book.tags.find(tag => filters.tags === tag.name)
-                )
+        this.filtersForm.valueChanges
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(filters => {
+                this.filteredBooks = this.books
+                    .filter(book =>
+                        filters.status === this.ALL
+                            ? book
+                            : book.status === filters.status
+                    )
+                    .filter(book => {
+                        if (filters.vault === this.ALL) {
+                            return book
+                        } else if (filters.vault === 'withoutVault') {
+                            return !book.vault
+                        } else if (filters.vault === 'withVault') {
+                            return book.vault
+                        } else if (typeof +filters.vault === 'number') {
+                            return book?.vault?.id === +filters.vault
+                        }
+                    })
+                    .filter(book =>
+                        filters.tags === this.ALL
+                            ? book
+                            : book.tags.find(tag => filters.tags === tag.name)
+                    )
 
-            this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
-            this._setPagination()
-            this._setPaginatedBooks()
-        })
+                this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
+                this._setPagination()
+                this._setPaginatedBooks()
+            })
 
-        this._appService.tags$.subscribe(tags => (this.tags = tags))
+        this._appService.tags$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(tags => (this.tags = tags))
 
-        this._appService.books$.subscribe(books => {
-            this.books = books
-            this.filteredBooks = this.books
-            this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
-            this._setPagination()
-            this._setPaginatedBooks()
-        })
+        this._appService.books$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(books => {
+                this.books = books
+                this.filteredBooks = this.books
+                this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
+                this._setPagination()
+                this._setPaginatedBooks()
+            })
 
         this.currentPage.valueChanges
             .pipe(pairwise())
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(([prevPage, nextPage]) =>
                 this._updateBooksByPage(prevPage, nextPage)
             )
@@ -164,6 +177,7 @@ export class BooksComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(res => {
                 this._appService.vaults$.next(res)
                 this.onToggleDeletingDialog(null)
@@ -190,6 +204,7 @@ export class BooksComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(res => this._appService.vaults$.next(res))
     }
 

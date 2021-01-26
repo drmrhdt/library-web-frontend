@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
-import { mergeMap } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { mergeMap, takeUntil } from 'rxjs/operators'
 
 import { VaultService, BookService, TagsService } from '../api/index'
 
@@ -35,6 +36,8 @@ export class BookFormComponent implements OnInit {
 
     tags: { id: number; name: string; value: string }[] = []
 
+    private _unsubscriber$ = new Subject()
+
     constructor(
         private _formBuilder: FormBuilder,
         private _appService: AppService,
@@ -44,7 +47,9 @@ export class BookFormComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this._appService.vaults$.subscribe(vaults => (this.vaults = vaults))
+        this._appService.vaults$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(vaults => (this.vaults = vaults))
 
         this.bookForm = this._formBuilder.group({
             name: ['', [Validators.required, Validators.minLength(2)]],
@@ -75,38 +80,45 @@ export class BookFormComponent implements OnInit {
     }
 
     private _setTags(): void {
-        this._tagService.tagsControllerFindAll().subscribe(tags => {
-            this.tags = tags
-            this._appService.tags$.next(tags)
-        })
+        this._tagService
+            .tagsControllerFindAll()
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(tags => {
+                this.tags = tags
+                this._appService.tags$.next(tags)
+            })
     }
 
     private _setVault(): void {
-        this.bookForm.get('vault').valueChanges.subscribe(id => {
-            this.currentVault = this.vaults.find(vault => vault.id === +id)
+        this.bookForm
+            .get('vault')
+            .valueChanges.pipe(takeUntil(this._unsubscriber$))
+            .subscribe(id => {
+                this.currentVault = this.vaults.find(vault => vault.id === +id)
 
-            if (!this.currentVault) {
-                return
-            }
+                if (!this.currentVault) {
+                    return
+                }
 
-            this.bookForm.get('shelf').patchValue('1')
-            this.bookForm.get('row').patchValue('1')
+                this.bookForm.get('shelf').patchValue('1')
+                this.bookForm.get('row').patchValue('1')
 
-            this.isShowVaultsFields = true
-            this.maxBooksOnShelfArray = getArrayFromNumber(
-                this.currentVault.maxBooksOnShelf
-            )
+                this.isShowVaultsFields = true
+                this.maxBooksOnShelfArray = getArrayFromNumber(
+                    this.currentVault.maxBooksOnShelf
+                )
 
-            this.bookForm
-                .get('number')
-                .patchValue(this.maxBooksOnShelfArray[0] + 1)
-        })
+                this.bookForm
+                    .get('number')
+                    .patchValue(this.maxBooksOnShelfArray[0] + 1)
+            })
     }
 
     private _showReasonFieldDependsOnStatus(): void {
         this.bookForm
             .get('status')
-            .valueChanges.subscribe(
+            .valueChanges.pipe(takeUntil(this._unsubscriber$))
+            .subscribe(
                 status =>
                     (this.isShowReasonOfMissingField = status === 'missing')
             )
@@ -126,6 +138,7 @@ export class BookFormComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(res => {
                 this._appService.vaults$.next(res)
                 this._resetForm()
@@ -143,6 +156,7 @@ export class BookFormComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(res => {
                 this._appService.vaults$.next(res)
                 this.success.emit(true)
@@ -150,10 +164,13 @@ export class BookFormComponent implements OnInit {
     }
 
     createTag(tag): void {
-        this._tagService.tagsControllerCreate({ name: tag }).subscribe(() => {
-            this._setTags()
-            this.inputTag.patchValue('')
-        })
+        this._tagService
+            .tagsControllerCreate({ name: tag })
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(() => {
+                this._setTags()
+                this.inputTag.patchValue('')
+            })
     }
 
     private _resetForm(): void {

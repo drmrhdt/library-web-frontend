@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
+
 import { AppService } from '../services/app.service'
 
 @Component({
@@ -19,25 +22,29 @@ export class SideMenuComponent implements OnInit {
     isCreatingVault = false
     isCreatingBook = false
 
+    private _unsubscriber$ = new Subject()
+
     constructor(private _appService: AppService, private _router: Router) {}
 
     ngOnInit(): void {
-        this._appService.vaults$.subscribe(vaults => {
-            this.vaults = vaults
+        this._appService.vaults$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(vaults => {
+                this.vaults = vaults
 
-            this.menu = []
+                this.menu = []
 
-            const vaultsMenu = {
-                name: 'Хранилища',
-                route: 'vault',
-                items: this.vaults?.map(vault => ({
-                    name: vault.name,
-                    route: vault.id
-                }))
-            }
+                const vaultsMenu = {
+                    name: 'Хранилища',
+                    route: 'vault',
+                    items: this.vaults?.map(vault => ({
+                        name: vault.name,
+                        route: vault.id
+                    }))
+                }
 
-            this.menu.unshift(vaultsMenu, this.bookMenu)
-        })
+                this.menu.unshift(vaultsMenu, this.bookMenu)
+            })
     }
 
     isOuterMenuItemChecked(route): boolean {

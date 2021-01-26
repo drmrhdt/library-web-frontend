@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 
-import { filter, map, mergeMap } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { filter, map, mergeMap, takeUntil } from 'rxjs/operators'
+
+import { BookService, VaultService } from '../../api/index'
 
 import { AppService } from '../../services/app.service'
-import { BookService, VaultService } from '../../api/index'
 
 @Component({
     selector: 'app-vault',
@@ -18,6 +20,8 @@ export class VaultComponent implements OnInit {
     isUpdatingDialogOpened = false
     vault
 
+    private _unsubscriber$ = new Subject()
+
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
@@ -27,15 +31,17 @@ export class VaultComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this._appService.vaults$.subscribe(vaults => {
-            this.vaults = vaults
-            this.filteredVaults = vaults
+        this._appService.vaults$
+            .pipe(takeUntil(this._unsubscriber$))
+            .subscribe(vaults => {
+                this.vaults = vaults
+                this.filteredVaults = vaults
 
-            const id = +this._route.snapshot.firstChild?.params.id
-            this.filteredVaults = id
-                ? this.vaults?.filter(vault => vault.id === id)
-                : this.vaults
-        })
+                const id = +this._route.snapshot.firstChild?.params.id
+                this.filteredVaults = id
+                    ? this.vaults?.filter(vault => vault.id === id)
+                    : this.vaults
+            })
 
         this._router.events
             .pipe(
@@ -48,6 +54,7 @@ export class VaultComponent implements OnInit {
                 filter(route => route.outlet === 'primary'),
                 mergeMap(route => route.params)
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(params => {
                 const id = +params['id']
                 this.filteredVaults = id
@@ -66,6 +73,7 @@ export class VaultComponent implements OnInit {
                     return this._vaultService.vaultControllerGetAll()
                 })
             )
+            .pipe(takeUntil(this._unsubscriber$))
             .subscribe(res => {
                 this._appService.vaults$.next(res)
                 this.toggleDeletingDialog(null)
