@@ -40,9 +40,15 @@
                     <select name="vault"
                             formControlName="vault">
                         <option [value]="ALL"
-                                selected>Все</option>
+                                selected>
+                            Все
+                        </option>
                         <option value="withoutVault">Без хранилища</option>
                         <option value="withVault">Только в хранилище</option>
+                        <option *ngFor="let vault of vaults"
+                                [value]="vault.id">
+                            {{vault.name}}
+                        </option>
                     </select>
                 </th>
                 <th>Полка</th>
@@ -63,9 +69,13 @@
                     <select name="tags"
                             formControlName="tags">
                         <option [value]="ALL"
-                                selected>Все</option>
+                                selected>
+                            Все
+                        </option>
                         <option *ngFor="let tag of tags"
-                                [value]="tag.name">{{tag.name}}</option>
+                                [value]="tag.name">
+                            {{tag.name}}
+                        </option>
                     </select>
                 </th>
                 <th></th>

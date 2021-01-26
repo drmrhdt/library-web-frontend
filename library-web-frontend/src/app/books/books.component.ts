@@ -25,6 +25,7 @@ export class BooksComponent implements OnInit {
     filteredBooks = []
     booksOnCurrentPage = []
     tags = []
+    vaults = []
 
     isDeletingDialogOpened = false
     isUpdatingDialogOpened = false
@@ -59,6 +60,8 @@ export class BooksComponent implements OnInit {
             tags: [this.ALL]
         })
 
+        this._appService.vaults$.subscribe(vaults => (this.vaults = vaults))
+
         this.filtersForm.valueChanges.subscribe(filters => {
             this.filteredBooks = this.books
                 .filter(book =>
@@ -73,6 +76,8 @@ export class BooksComponent implements OnInit {
                         return !book.vault
                     } else if (filters.vault === 'withVault') {
                         return book.vault
+                    } else if (typeof +filters.vault === 'number') {
+                        return book?.vault?.id === +filters.vault
                     }
                 })
                 .filter(book =>
