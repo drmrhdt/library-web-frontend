@@ -1,21 +1,16 @@
 <div class="books__header">
-    <label for="importBooks">
-        Импортировать книги
-        <i class="icon icon-file_download"
-           [title]="'Импортировать книги'">
-        </i>
-    </label>
+    <i class="icon icon-file_download"
+       title="Импортировать книги">
+    </i>
     <input type="file"
            hidden
            id="importBooks"
            (change)="onChangeImportFile($event)"
            #inputFile>
-    <label (click)="onExportBooks(exportLink)">
-        Экспортировать книги
-        <i class="icon icon-file_upload"
-           [title]="'Экспортировать книги'">
-        </i>
-    </label>
+    <i class="icon icon-file_upload"
+       title="Экспортировать книги"
+       (click)="onExportBooks(exportLink)">
+    </i>
     <a hidden
        #exportLink>
     </a>
