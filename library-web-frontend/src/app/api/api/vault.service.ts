@@ -27,7 +27,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class VaultService {
 
-    protected basePath = 'http://localhost:3000';
+    protected basePath = 'https://library-bcknd.herokuapp.com';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

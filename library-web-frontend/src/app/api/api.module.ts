@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { BookService } from './api/book.service';
+import { DefaultService } from './api/default.service';
 import { TagsService } from './api/tags.service';
 import { VaultService } from './api/vault.service';
 
@@ -13,6 +14,7 @@ import { VaultService } from './api/vault.service';
   exports:      [],
   providers: [
     BookService,
+    DefaultService,
     TagsService,
     VaultService ]
 })
