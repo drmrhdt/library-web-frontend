@@ -41,12 +41,13 @@ export class BooksComponent implements OnInit {
 
     BOOKS_PER_PAGE = 10
     DEFAULT_START_PAGE = 1
-    VISIBLE_PAGES = 5
+    VISIBLE_PAGES = 10
 
     ALL = 'all'
 
     currentPage = new FormControl(this.DEFAULT_START_PAGE)
     pages: number[] = []
+    visiblePages: number[] = []
 
     filtersForm: FormGroup
 
@@ -151,9 +152,10 @@ export class BooksComponent implements OnInit {
         this.currentPage.valueChanges
             .pipe(pairwise())
             .pipe(takeUntil(this._unsubscriber$))
-            .subscribe(([prevPage, nextPage]) =>
+            .subscribe(([prevPage, nextPage]) => {
+                this._updateVisiblePages(nextPage)
                 this._updateBooksByPage(prevPage, nextPage)
-            )
+            })
     }
 
     private _setSortBooksAlphabetically(
@@ -173,11 +175,12 @@ export class BooksComponent implements OnInit {
     }
 
     private _setPagination(): void {
-        const numberOfPages = Math.ceil(
+        const numberOfPages = Math.floor(
             this.filteredBooks.length / this.BOOKS_PER_PAGE
         )
         this.pages = getArrayFromNumber(numberOfPages, true, true)
         this.currentPage.patchValue(this.pages[0])
+        this._updateVisiblePages(this.DEFAULT_START_PAGE)
     }
 
     private _setPaginatedBooks(): void {
@@ -210,6 +213,15 @@ export class BooksComponent implements OnInit {
                       prevPage * this.BOOKS_PER_PAGE,
                       prevPage * this.BOOKS_PER_PAGE + this.BOOKS_PER_PAGE
                   )
+    }
+
+    private _updateVisiblePages(currentPage: number): void {
+        const leftBorder =
+            Math.floor((currentPage - 1) / this.VISIBLE_PAGES) *
+            this.VISIBLE_PAGES
+        const rightBorder = leftBorder + this.VISIBLE_PAGES
+
+        this.visiblePages = this.pages.slice(leftBorder, rightBorder)
     }
 
     onDeleteBook(): void {

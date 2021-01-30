@@ -64,6 +64,10 @@
       cursor: pointer;
     }
 
+    &__btn-with-ellipsis {
+      display: flex;
+    }
+
     .currentPage {
       text-align: center;
       color: $color-white;
@@ -75,6 +79,10 @@
       color: $color-menu-item-checked;
 
       cursor: default;
+    }
+
+    .ellipsis {
+      padding: 0 0.5rem;
     }
   }
 }

@@ -167,6 +167,13 @@
             </option>
         </select>
     </div>
+    <div>
+        {{currentPage.value === DEFAULT_START_PAGE ? currentPage.value : currentPage.value * BOOKS_PER_PAGE}} -
+        {{currentPage.value === DEFAULT_START_PAGE ? (currentPage.value ) * BOOKS_PER_PAGE : (currentPage.value + 1) *
+        BOOKS_PER_PAGE > books.length ? books.length : (currentPage.value + 1) *
+        BOOKS_PER_PAGE}} из
+        {{books.length}}
+    </div>
     <div class="pagination__paginator">
         <i class="icon icon-navigate_before"
            [class.disabled]="currentPage.value === DEFAULT_START_PAGE"
@@ -174,17 +181,39 @@
            [title]="'Предыдущая страница'">
         </i>
 
+        <div *ngIf="DEFAULT_START_PAGE < visiblePages[0]"
+             class="pagination__btn-with-ellipsis">
+            <div class="pagination__btn"
+                 (click)="onChangeCurrentPage(DEFAULT_START_PAGE)">
+                {{DEFAULT_START_PAGE}}
+            </div>
+            <span class="ellipsis">
+                ...
+            </span>
+        </div>
+
         <div class="pagination__btns">
             <div class="pagination__btn"
-                 *ngFor="let page of pages; let index = page;"
+                 *ngFor="let page of visiblePages; let index = page;"
                  (click)="onChangeCurrentPage(page)"
                  [class.currentPage]="currentPage.value === page">
                 {{page}}
             </div>
         </div>
 
+        <div *ngIf="currentPage.value < pages.length"
+             class="pagination__btn-with-ellipsis">
+            <span class="ellipsis">
+                ...
+            </span>
+            <div class="pagination__btn"
+                 (click)="onChangeCurrentPage(pages.length)">
+                {{pages.length}}
+            </div>
+        </div>
+
         <i class="icon icon-navigate_next"
-           [class.disabled]="currentPage.value ===  pages.length"
+           [class.disabled]="currentPage.value === pages.length"
            (click)="currentPage.value === pages.length ? '' : onChangeCurrentPage(null, PaginationArrowsActions.INC)"
            [title]="'Следующая страница'">
         </i>
