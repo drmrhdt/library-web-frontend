@@ -16,6 +16,12 @@ enum PaginationArrowsActions {
     DEC = 'dec',
     INC = 'inc'
 }
+
+enum SortActions {
+    ASC = 'asc',
+    DESC = 'desc'
+}
+
 @Component({
     selector: 'app-books',
     templateUrl: './books.component.html',
@@ -45,6 +51,7 @@ export class BooksComponent implements OnInit {
     filtersForm: FormGroup
 
     PaginationArrowsActions = PaginationArrowsActions
+    SortActions = SortActions
 
     @ViewChild('inputFile') inputFile: ElementRef
 
@@ -62,8 +69,8 @@ export class BooksComponent implements OnInit {
             status: [this.ALL],
             vault: [this.ALL],
             tags: [this.ALL],
-            sortByName: ['asc'],
-            sortByAuthor: ['asc']
+            sortByName: [this.SortActions.ASC],
+            sortByAuthor: [this.SortActions.ASC]
         })
 
         this._appService.vaults$

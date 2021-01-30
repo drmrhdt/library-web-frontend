@@ -31,18 +31,26 @@
                     Название
                     <select id="sortByName"
                             formControlName="sortByName">
-                        <option value="asc"
-                                selected>По алфавиту</option>
-                        <option value="desc">В обратном порядке</option>
+                        <option [value]="SortActions.ASC"
+                                selected>
+                            По алфавиту
+                        </option>
+                        <option [value]="SortActions.DESC">
+                            В обратном порядке
+                        </option>
                     </select>
                 </th>
                 <th>
                     Автор
                     <select id="sortByAuthor"
                             formControlName="sortByAuthor">
-                        <option value="asc"
-                                selected>По алфавиту</option>
-                        <option value="desc">В обратном порядке</option>
+                        <option [value]="SortActions.ASC"
+                                selected>
+                            По алфавиту
+                        </option>
+                        <option [value]="SortActions.DESC">
+                            В обратном порядке
+                        </option>
                     </select>
                 </th>
                 <th>Описание</th>
