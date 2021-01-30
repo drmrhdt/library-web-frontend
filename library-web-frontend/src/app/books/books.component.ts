@@ -69,8 +69,8 @@ export class BooksComponent implements OnInit {
             status: [this.ALL],
             vault: [this.ALL],
             tags: [this.ALL],
-            sortByName: [this.SortActions.ASC],
-            sortByAuthor: [this.SortActions.ASC]
+            sortByName: [{ isApplied: true, action: SortActions.ASC }],
+            sortByAuthor: [{ isApplied: false, action: null }]
         })
 
         this._appService.vaults$
@@ -103,7 +103,29 @@ export class BooksComponent implements OnInit {
                             : book.tags.find(tag => filters.tags === tag.name)
                     )
 
-                this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
+                const sortByNameControl = this.filtersForm.get('sortByName')
+                const sortByAuthorControl = this.filtersForm.get('sortByAuthor')
+
+                if (sortByNameControl.value.isApplied) {
+                    this._setSortBooksAlphabetically(
+                        this.filteredBooks,
+                        'name',
+                        sortByNameControl.value.action === SortActions.ASC
+                            ? SortActions.ASC
+                            : SortActions.DESC
+                    )
+                }
+
+                if (sortByAuthorControl.value.isApplied) {
+                    this._setSortBooksAlphabetically(
+                        this.filteredBooks,
+                        'author',
+                        sortByAuthorControl.value.action === SortActions.ASC
+                            ? SortActions.ASC
+                            : SortActions.DESC
+                    )
+                }
+
                 this._setPagination()
                 this._setPaginatedBooks()
             })
@@ -117,7 +139,11 @@ export class BooksComponent implements OnInit {
             .subscribe(books => {
                 this.books = books
                 this.filteredBooks = this.books
-                this._setSortBooksAlphabeticallyByNames(this.filteredBooks)
+                this._setSortBooksAlphabetically(
+                    this.filteredBooks,
+                    'name',
+                    SortActions.ASC
+                )
                 this._setPagination()
                 this._setPaginatedBooks()
             })
@@ -130,10 +156,20 @@ export class BooksComponent implements OnInit {
             )
     }
 
-    private _setSortBooksAlphabeticallyByNames(books): void {
-        this.filteredBooks = books.sort((fBook, sBook) =>
-            fBook.name.localeCompare(sBook.name)
-        )
+    private _setSortBooksAlphabetically(
+        books,
+        sortParam: string,
+        order: SortActions
+    ): void {
+        if (order === SortActions.ASC) {
+            this.filteredBooks = books.sort((fBook, sBook) =>
+                fBook.name.localeCompare(sBook[sortParam])
+            )
+        } else if (order === SortActions.DESC) {
+            this.filteredBooks = books.sort((fBook, sBook) =>
+                sBook.name.localeCompare(fBook[sortParam])
+            )
+        }
     }
 
     private _setPagination(): void {
