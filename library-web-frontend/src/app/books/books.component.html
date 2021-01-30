@@ -27,8 +27,24 @@
         <thead>
             <tr>
                 <th class="left-text">№</th>
-                <th class="left-text">Название</th>
-                <th>Автор</th>
+                <th class="left-text">
+                    Название
+                    <select id="sortByName"
+                            formControlName="sortByName">
+                        <option value="asc"
+                                selected>По алфавиту</option>
+                        <option value="desc">В обратном порядке</option>
+                    </select>
+                </th>
+                <th>
+                    Автор
+                    <select id="sortByAuthor"
+                            formControlName="sortByAuthor">
+                        <option value="asc"
+                                selected>По алфавиту</option>
+                        <option value="desc">В обратном порядке</option>
+                    </select>
+                </th>
                 <th>Описание</th>
                 <th>
                     Хранилище

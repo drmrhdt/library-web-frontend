@@ -61,7 +61,9 @@ export class BooksComponent implements OnInit {
         this.filtersForm = this._formBuilder.group({
             status: [this.ALL],
             vault: [this.ALL],
-            tags: [this.ALL]
+            tags: [this.ALL],
+            sortByName: ['asc'],
+            sortByAuthor: ['asc']
         })
 
         this._appService.vaults$
