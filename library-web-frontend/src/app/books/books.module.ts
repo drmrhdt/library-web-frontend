@@ -7,12 +7,14 @@ import { ModalModule } from '../shared/components/modal/modal.module'
 import { BookFormModule } from '../book-form/book-form.module'
 
 import { BooksComponent } from './books.component'
+import { BookDetailsComponent } from './book-details/book-details.component'
 
 const routes: Routes = [
     {
         path: '',
         component: BooksComponent
-    }
+    },
+    { path: ':id', component: BookDetailsComponent }
 ]
 
 @NgModule({

@@ -106,7 +106,8 @@
         <tbody>
             <tr *ngFor="let book of booksOnCurrentPage; let bookIndex = index">
                 <td>{{bookIndex + 1}}</td>
-                <td class="left-text">{{book?.name || '-'}}</td>
+                <td class="left-text"
+                    [routerLink]="[book?.id]">{{book?.name || '-'}}</td>
                 <td>{{book?.author || '-'}}</td>
                 <td>{{book?.description || '-'}}</td>
                 <td [routerLink]="book?.vault?.id ? ['..', 'vault', book?.vault?.id] : '.'">
