@@ -1,1 +1,9 @@
-<p>book-details works!</p>
+<div>Название книги: {{book?.name}}</div>
+<div>Автор: {{book?.author}}</div>
+<div>Хранилище: {{book?.vault.id}}</div>
+<div>Полка: {{book?.shelf}}</div>
+<div>Ряд: {{book?.row}}</div>
+<div>Номер: {{book?.number}}</div>
+<img [src]="book?.url"
+     class="book__img"
+     alt="book's cover">
