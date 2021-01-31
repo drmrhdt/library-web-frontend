@@ -1,6 +1,18 @@
-.book {
-  &__img {
-    width: 10rem;
-    max-height: auto;
+:host {
+  display: flex;
+
+  .book {
+    &__img {
+      width: 10rem;
+      max-height: auto;
+    }
+
+    &__info {
+      padding-left: 1rem;
+
+      & > :nth-child(n) {
+        padding-bottom: 1rem;
+      }
+    }
   }
 }
