@@ -1,4 +1,4 @@
-<form (ngSubmit)="book ? updateBook(book) : createBook()"
+<form (ngSubmit)="book ? updateBook(book, bookPhoto) : createBook(bookPhoto)"
       [formGroup]="bookForm">
 
     <div class="form-group">
@@ -126,6 +126,28 @@
                 {{tag.name}}
             </option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="file">Выбрать фото</label>
+        <input type="file"
+               id="file"
+               class="book-form__preview-input"
+               #bookPhoto
+               name="image"
+               (change)="onImageSelected($event, bookPhoto)"
+               autocomplete="off" />
+    </div>
+    <div #imageBlock
+         *ngIf="previewBook || book?.url">
+        <img [src]="previewBook || book?.url"
+             class="book-form__preview"
+             alt="preview book cover photo"
+             (error)="imageBlock.style.display = 'none'">
+        <i class="icon icon-bin"
+           (click)="onDeletePhoto(bookPhoto)"
+           [title]="'Удалить'">
+        </i>
     </div>
 
     <app-button [class]="'contained'"

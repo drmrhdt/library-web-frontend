@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
+import { AngularFireStorage } from '@angular/fire/storage'
 
-import { Subject } from 'rxjs'
-import { mergeMap, takeUntil } from 'rxjs/operators'
+import { Observable, Subject } from 'rxjs'
+import { finalize, mergeMap, takeUntil } from 'rxjs/operators'
 
 import { VaultService, BookService, TagsService } from '../api/index'
 
@@ -36,6 +37,10 @@ export class BookFormComponent implements OnInit {
 
     tags: { id: number; name: string; value: string }[] = []
 
+    selectedImage: File = null
+    downloadURL: Observable<string>
+    previewBook = null
+
     private _unsubscriber$ = new Subject()
 
     constructor(
@@ -43,7 +48,8 @@ export class BookFormComponent implements OnInit {
         private _appService: AppService,
         private _bookService: BookService,
         private _vaultService: VaultService,
-        private _tagService: TagsService
+        private _tagService: TagsService,
+        private _storage: AngularFireStorage
     ) {}
 
     ngOnInit(): void {
@@ -124,45 +130,6 @@ export class BookFormComponent implements OnInit {
             )
     }
 
-    createBook(): void {
-        if (this.bookForm.invalid) {
-            return
-        }
-        const bookData = this.bookForm.value
-        this._bookService
-            .bookControllerCreate([bookData])
-            .pipe(
-                mergeMap(() => this._bookService.bookControllerGetAll()),
-                mergeMap(res => {
-                    this._appService.books$.next(res)
-                    return this._vaultService.vaultControllerGetAll()
-                })
-            )
-            .pipe(takeUntil(this._unsubscriber$))
-            .subscribe(res => {
-                this._appService.vaults$.next(res)
-                this._resetForm()
-                this.success.emit(true)
-            })
-    }
-
-    updateBook(book): void {
-        this._bookService
-            .bookControllerUpdate(this.bookForm.value, book.id)
-            .pipe(
-                mergeMap(() => this._bookService.bookControllerGetAll()),
-                mergeMap(res => {
-                    this._appService.books$.next(res)
-                    return this._vaultService.vaultControllerGetAll()
-                })
-            )
-            .pipe(takeUntil(this._unsubscriber$))
-            .subscribe(res => {
-                this._appService.vaults$.next(res)
-                this.success.emit(true)
-            })
-    }
-
     createTag(tag): void {
         this._tagService
             .tagsControllerCreate({ name: tag })
@@ -185,5 +152,140 @@ export class BookFormComponent implements OnInit {
             status: 'inPlace',
             reasonOfmissing: ''
         })
+    }
+
+    onDeletePhoto(input: HTMLInputElement): void {
+        input.value = null
+        this.previewBook = null
+    }
+
+    onImageSelected(event, userPhoto: HTMLInputElement): void {
+        if (this.previewBook) {
+            userPhoto.value = null
+        }
+        const file = event.target.files[0]
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = _event => (this.previewBook = reader.result)
+    }
+
+    createBook(input: HTMLInputElement): void {
+        if (this.bookForm.invalid) {
+            return
+        }
+
+        this.saveImageAndUpdateBookWithPhoto(
+            input,
+            this.bookForm.value,
+            null,
+            'create'
+        )
+    }
+
+    createOrUpdateBook(
+        book,
+        bookId,
+        action: 'create' | 'update'
+    ): Observable<any> {
+        return action === 'create'
+            ? this._bookService.bookControllerCreate(book)
+            : this._bookService.bookControllerUpdate(book, bookId)
+    }
+
+    saveImageAndUpdateBookWithPhoto(
+        input: HTMLInputElement,
+        book,
+        bookId,
+        action: 'create' | 'update'
+    ): void {
+        const n = Date.now()
+        const file = input.files[0]
+        const filePath = `booksImages/${n}`
+        const fileRef = this._storage.ref(filePath)
+        const task = this._storage.upload(`booksImages/${n}`, file)
+
+        task.snapshotChanges()
+            .pipe(
+                takeUntil(this._unsubscriber$),
+                finalize(() =>
+                    fileRef
+                        .getDownloadURL()
+                        .pipe(takeUntil(this._unsubscriber$))
+                        .subscribe(url => {
+                            if (!url) {
+                                return
+                            }
+
+                            this.createOrUpdateBook(
+                                action === 'update'
+                                    ? { ...book, url }
+                                    : [{ url, ...book }],
+                                bookId,
+                                action
+                            )
+                                .pipe(
+                                    takeUntil(this._unsubscriber$),
+                                    mergeMap(() =>
+                                        this._bookService.bookControllerGetAll()
+                                    ),
+                                    mergeMap(res => {
+                                        this._appService.books$.next(res)
+                                        return this._vaultService.vaultControllerGetAll()
+                                    })
+                                )
+                                .subscribe(res => {
+                                    input.value = null
+                                    this._appService.vaults$.next(res)
+                                    this._resetForm()
+                                    this.success.emit(true)
+                                })
+                        })
+                )
+            )
+            .subscribe()
+    }
+
+    updateBook(book, input: HTMLInputElement): void {
+        if (this.previewBook) {
+            if (book.url) {
+                this._storage
+                    .refFromURL(book.url)
+                    .delete()
+                    .pipe(takeUntil(this._unsubscriber$))
+                    .subscribe(() =>
+                        this.saveImageAndUpdateBookWithPhoto(
+                            input,
+                            book,
+                            book.id,
+                            'update'
+                        )
+                    )
+            } else {
+                this.saveImageAndUpdateBookWithPhoto(
+                    input,
+                    book,
+                    book.id,
+                    'update'
+                )
+            }
+        } else {
+            this._bookService
+                .bookControllerUpdate(
+                    { url: this.book.url, ...this.bookForm.value },
+                    book.id
+                )
+                .pipe(
+                    takeUntil(this._unsubscriber$),
+                    mergeMap(() => this._bookService.bookControllerGetAll()),
+                    mergeMap(res => {
+                        this._appService.books$.next(res)
+                        return this._vaultService.vaultControllerGetAll()
+                    })
+                )
+                .subscribe(res => {
+                    this._appService.vaults$.next(res)
+                    this.success.emit(true)
+                })
+        }
     }
 }
