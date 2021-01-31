@@ -166,7 +166,7 @@
         {{currentPage.value === DEFAULT_START_PAGE ? (currentPage.value ) * BOOKS_PER_PAGE : (currentPage.value + 1) *
         BOOKS_PER_PAGE > books.length ? books.length : (currentPage.value + 1) *
         BOOKS_PER_PAGE}} из
-        {{books.length}}
+        {{filteredBooks.length}}
     </div>
     <div class="pagination__paginator">
         <i class="icon icon-navigate_before"
