@@ -138,7 +138,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
                     return
                 }
 
-                if (this.book?.vault.id === this.currentVault.id) {
+                if (this.book?.vault?.id === this.currentVault.id) {
                     this.bookForm.get('shelf').patchValue(this.book.shelf)
                     this.bookForm.get('row').patchValue(this.book.row)
 
