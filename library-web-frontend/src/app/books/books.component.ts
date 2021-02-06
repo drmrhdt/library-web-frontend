@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
 
 import { Subject } from 'rxjs'
@@ -27,7 +33,7 @@ enum SortActions {
     templateUrl: './books.component.html',
     styleUrls: ['./books.component.scss']
 })
-export class BooksComponent implements OnInit {
+export class BooksComponent implements OnInit, OnDestroy {
     book
     books = []
     filteredBooks = []
@@ -156,6 +162,11 @@ export class BooksComponent implements OnInit {
                 this._updateVisiblePages(nextPage)
                 this._updateBooksByPage(prevPage, nextPage)
             })
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 
     private _setSortBooksAlphabetically(

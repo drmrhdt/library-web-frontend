@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
 import { Subject } from 'rxjs'
@@ -11,7 +11,7 @@ import { AppService } from '../../services/app.service'
     templateUrl: './vault-details.component.html',
     styleUrls: ['./vault-details.component.scss']
 })
-export class VaultDetailsComponent implements OnInit {
+export class VaultDetailsComponent implements OnInit, OnDestroy {
     vault
 
     private _unsubscriber$ = new Subject()
@@ -33,5 +33,10 @@ export class VaultDetailsComponent implements OnInit {
                         )
                     })
             )
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 }

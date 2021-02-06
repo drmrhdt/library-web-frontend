@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 
 import { Subject } from 'rxjs'
@@ -11,7 +11,7 @@ import { AppService } from '../services/app.service'
     templateUrl: './side-menu.component.html',
     styleUrls: ['./side-menu.component.scss']
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit, OnDestroy {
     menu = []
     bookMenu = {
         name: 'Книги',
@@ -45,6 +45,11 @@ export class SideMenuComponent implements OnInit {
 
                 this.menu.unshift(vaultsMenu, this.bookMenu)
             })
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 
     isOuterMenuItemChecked(route): boolean {

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output
+} from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { Subject } from 'rxjs'
@@ -13,7 +20,7 @@ import { AppService } from '../services/app.service'
     templateUrl: './vault-form.component.html',
     styleUrls: ['./vault-form.component.scss']
 })
-export class VaultFormComponent implements OnInit {
+export class VaultFormComponent implements OnInit, OnDestroy {
     vaultForm: FormGroup
 
     @Output() success: EventEmitter<boolean> = new EventEmitter()
@@ -42,6 +49,11 @@ export class VaultFormComponent implements OnInit {
         if (this.vault) {
             this.vaultForm.patchValue(this.vault)
         }
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 
     createVault(): void {

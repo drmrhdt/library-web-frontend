@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 
 import { Subject } from 'rxjs'
@@ -13,7 +13,7 @@ import { AppService } from '../../services/app.service'
     templateUrl: './vault.component.html',
     styleUrls: ['./vault.component.scss']
 })
-export class VaultComponent implements OnInit {
+export class VaultComponent implements OnInit, OnDestroy {
     vaults = []
     filteredVaults = []
     isDeletingDialogOpened = false
@@ -61,6 +61,11 @@ export class VaultComponent implements OnInit {
                     ? this.vaults?.filter(vault => vault.id === id)
                     : this.vaults
             })
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 
     deleteVault(): void {

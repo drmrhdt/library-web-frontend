@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -12,7 +12,7 @@ import { AppService } from './services/app.service'
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
     private _unsubscriber$ = new Subject()
 
     constructor(
@@ -20,7 +20,9 @@ export class AppComponent {
         private _bookService: BookService,
         private _vaultService: VaultService,
         private _tagsService: TagsService
-    ) {
+    ) {}
+
+    ngOnInit(): void {
         this._bookService
             .bookControllerGetAll()
             .pipe(takeUntil(this._unsubscriber$))
@@ -35,5 +37,10 @@ export class AppComponent {
             .tagsControllerFindAll()
             .pipe(takeUntil(this._unsubscriber$))
             .subscribe(tags => this._appService.tags$.next(tags))
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 }

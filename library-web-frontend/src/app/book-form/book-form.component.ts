@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output
+} from '@angular/core'
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { AngularFireStorage } from '@angular/fire/storage'
 
@@ -16,7 +23,7 @@ import { getArrayFromNumber } from 'src/app/util/util'
     templateUrl: './book-form.component.html',
     styleUrls: ['./book-form.component.scss']
 })
-export class BookFormComponent implements OnInit {
+export class BookFormComponent implements OnInit, OnDestroy {
     bookForm: FormGroup
     isShowReasonOfMissingField = false
     isShowVaultsFields = false
@@ -74,6 +81,11 @@ export class BookFormComponent implements OnInit {
         this._setVault()
         this._setTags()
         this._showReasonFieldDependsOnStatus()
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscriber$.next()
+        this._unsubscriber$.complete()
     }
 
     private _setBook(book): void {
