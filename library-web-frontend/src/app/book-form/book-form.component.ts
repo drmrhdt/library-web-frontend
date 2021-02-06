@@ -78,7 +78,8 @@ export class BookFormComponent implements OnInit, OnDestroy {
         })
 
         this._setBook(this.book)
-        this._setVault()
+        this._setVaultInitial()
+        this._setVaultOnChange()
         this._setTags()
         this._showReasonFieldDependsOnStatus()
     }
@@ -107,7 +108,26 @@ export class BookFormComponent implements OnInit, OnDestroy {
             })
     }
 
-    private _setVault(): void {
+    private _setVaultInitial(): void {
+        if (this.bookForm.get('vault').value) {
+            this.isShowVaultsFields = true
+
+            this.currentVault = this.vaults.find(
+                vault => vault.id === this.book.vault.id
+            )
+
+            this.bookForm.get('shelf').patchValue(this.book.shelf)
+            this.bookForm.get('row').patchValue(this.book.row)
+
+            this.maxBooksOnShelfArray = getArrayFromNumber(
+                this.currentVault.maxBooksOnShelf
+            )
+
+            this.bookForm.get('number').patchValue(this.book.number)
+        }
+    }
+
+    private _setVaultOnChange(): void {
         this.bookForm
             .get('vault')
             .valueChanges.pipe(takeUntil(this._unsubscriber$))
@@ -115,6 +135,19 @@ export class BookFormComponent implements OnInit, OnDestroy {
                 this.currentVault = this.vaults.find(vault => vault.id === +id)
 
                 if (!this.currentVault) {
+                    return
+                }
+
+                if (this.book?.vault.id === this.currentVault.id) {
+                    this.bookForm.get('shelf').patchValue(this.book.shelf)
+                    this.bookForm.get('row').patchValue(this.book.row)
+
+                    this.maxBooksOnShelfArray = getArrayFromNumber(
+                        this.currentVault.maxBooksOnShelf
+                    )
+
+                    this.bookForm.get('number').patchValue(this.book.number)
+
                     return
                 }
 
