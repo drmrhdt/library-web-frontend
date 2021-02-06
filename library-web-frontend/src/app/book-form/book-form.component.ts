@@ -166,6 +166,13 @@ export class BookFormComponent implements OnInit, OnDestroy {
     }
 
     private _showReasonFieldDependsOnStatus(): void {
+        if (this.book) {
+            this.isShowReasonOfMissingField = this.book?.status === 'missing'
+            this.bookForm.patchValue({
+                reasonOfMissing: this.book?.reasonOfMissing
+            })
+        }
+
         this.bookForm
             .get('status')
             .valueChanges.pipe(takeUntil(this._unsubscriber$))
