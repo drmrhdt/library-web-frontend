@@ -1,1 +1,6 @@
-library-web-backend
+node_modules
+.editorconfig
+.gitignore
+wwwroot/*.js
+typings
+dist
